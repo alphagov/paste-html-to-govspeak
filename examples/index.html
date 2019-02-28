@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Example</title>
+  </head>
+  <body>
+    <textarea rows=20 cols=60 placeholder="paste into here"></textarea>
+    <script src="../dist/paste-html-to-markdown.js"></script>
+    <script>
+      document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
+    </script>
+  </body>
+</html>
