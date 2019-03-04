@@ -2031,7 +2031,9 @@
   }
 
   function toMarkdown(html) {
-    var service = new TurndownService();
+    var service = new TurndownService({
+      headingStyle: 'atx'
+    });
     return service.turndown(html);
   }
 
