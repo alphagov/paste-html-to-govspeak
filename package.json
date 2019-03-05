@@ -5,9 +5,12 @@
   "scripts": {
     "prebuild": "rm -rf dist/*",
     "build": "rollup -c",
+    "pretest": "npm run lint",
     "test": "jest",
     "lint": "standard",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "precheck-dist-built": "npm run build",
+    "check-dist-built": "git diff --quiet dist || (echo 'dist files are not in sync with src, run: npm run build' && exit 1)"
   },
   "standard": {
     "ignore": [
