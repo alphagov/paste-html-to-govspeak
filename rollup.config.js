@@ -6,7 +6,7 @@ export default {
   output: {
     file: 'dist/paste-html-to-markdown.js',
     format: 'umd',
-    name: 'pasteHtmlToGovspeak',
+    name: 'pasteHtmlToMarkdown',
     sourcemap: true
   },
   plugins: [

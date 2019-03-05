@@ -1,13 +1,21 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Example</title>
-  </head>
-  <body>
-    <textarea rows=20 cols=60 placeholder="paste into here"></textarea>
-    <script src="../dist/paste-html-to-markdown.js"></script>
-    <script>
-      document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
-    </script>
-  </body>
+<html lang="en" class="govuk-template">
+<head>
+  <meta charset="utf-8">
+  <title>paste-html-to-markdown examples</title>
+  <link href="govuk-frontend-2.7.0.min.css" rel="stylesheet">
+</head>
+<body class="govuk-template__body">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+      <h1 class="govuk-heading-xl">paste-html-to-markdown</h1>
+      <p class="govuk-body">A tool to allow pasting formatted content into Markdown</p>
+      <textarea class="govuk-textarea" rows=20></textarea>
+    </main>
+  </div>
+  <script src="../dist/paste-html-to-markdown.js"></script>
+  <script>
+    document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToMarkdown)
+  </script>
+</body>
 </html>

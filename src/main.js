@@ -9,7 +9,7 @@ function htmlFromPasteEvent (event) {
   return event.clipboardData.getData('text/html')
 }
 
-export default function pasteHtmlToGovspeak (event) {
+function pasteHtmlToMarkdown (event) {
   const element = event.target
 
   const html = htmlFromPasteEvent(event)
@@ -19,3 +19,9 @@ export default function pasteHtmlToGovspeak (event) {
     event.preventDefault()
   }
 }
+
+window.pasteHtmlToMarkdown = pasteHtmlToMarkdown
+window.sanitizeHtml = sanitizeHtml
+window.toMarkdown = toMarkdown
+
+export { pasteHtmlToMarkdown }

@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.pasteHtmlToGovspeak = factory());
-}(this, function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.pasteHtmlToMarkdown = {}));
+}(this, function (exports) { 'use strict';
 
   var freeze$1 = Object.freeze || function (x) {
     return x;
@@ -2152,7 +2152,7 @@
     return event.clipboardData.getData('text/html');
   }
 
-  function pasteHtmlToGovspeak(event) {
+  function pasteHtmlToMarkdown(event) {
     var element = event.target;
     var html = htmlFromPasteEvent(event);
 
@@ -2162,7 +2162,13 @@
     }
   }
 
-  return pasteHtmlToGovspeak;
+  window.pasteHtmlToMarkdown = pasteHtmlToMarkdown;
+  window.sanitizeHtml = sanitizeHtml;
+  window.toMarkdown = toMarkdown;
+
+  exports.pasteHtmlToMarkdown = pasteHtmlToMarkdown;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=paste-html-to-markdown.js.map
