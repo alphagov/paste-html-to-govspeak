@@ -2099,6 +2099,33 @@
     return service.turndown(html);
   }
 
+  function createHiddenElement() {
+    var ieHiddenElement = document.createElement('div');
+    ieHiddenElement.setAttribute('contenteditable', true);
+    ieHiddenElement.setAttribute('style', 'position: absolute; top:0; left: 0; opacity: 0;');
+    document.body.appendChild(ieHiddenElement);
+    return ieHiddenElement;
+  }
+
+  function removeElement(node) {
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+  }
+
+  function getHtmlUsingHiddenElement(ieHiddenElement) {
+    ieHiddenElement.focus();
+    document.execCommand('paste');
+    return ieHiddenElement.innerHTML;
+  }
+
+  function htmlFromHiddenElement() {
+    var ieHiddenElement = createHiddenElement();
+    var html = getHtmlUsingHiddenElement(ieHiddenElement);
+    removeElement(ieHiddenElement);
+    return html;
+  }
+
   let browserSupportsTextareaTextNodes;
 
   /**
@@ -2207,11 +2234,11 @@
   }
 
   function htmlFromPasteEvent(event) {
-    if (!event.clipboardData) {
-      return;
+    if (event.clipboardData) {
+      return event.clipboardData.getData('text/html');
+    } else if (window.clipboardData) {
+      return htmlFromHiddenElement();
     }
-
-    return event.clipboardData.getData('text/html');
   }
 
   function triggerPasteEvent(element, eventName, detail) {
