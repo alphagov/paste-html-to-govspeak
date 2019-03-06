@@ -2206,12 +2206,28 @@
     }
   }
 
-  function htmlFromPasteEvent(event) {
-    if (!event.clipboardData) {
-      return;
-    }
+  function pasteHtmlUsingHiddenElement(event) {
+    var ieHiddenElement = event.target;
+    setTimeout(function () {
+      var textarea = document.getElementById(ieHiddenElement.dataset.textarea);
+      var html = ieHiddenElement.innerHTML;
+      insertTextAtCursor(textarea, toMarkdown(sanitizeHtml(html)));
+      ieHiddenElement.innerHTML = '';
+    }, 0);
+  }
 
-    return event.clipboardData.getData('text/html');
+  function htmlFromPasteEvent(event) {
+    if (window.clipboardData) {
+      // IE11
+      pasteHtmlUsingHiddenElement(event);
+      return false;
+    } else if (event.clipboardData) {
+      // Chrome, Edge, Firefox & Safari
+      return event.clipboardData.getData('text/html');
+    } else {
+      // IE <11
+      return false;
+    }
   }
 
   function pasteHtmlToGovspeak(event) {
