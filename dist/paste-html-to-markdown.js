@@ -2070,6 +2070,31 @@
     return string;
   };
 
+  service.addRule('abbr', {
+    filter: function filter(node) {
+      return node.nodeName.toLowerCase() === 'abbr' && node.getAttribute('title');
+    },
+    replacement: function replacement(content, node) {
+      this.references[content] = node.getAttribute('title');
+      return content;
+    },
+    references: {},
+    append: function append() {
+      if (Object.keys(this.references).length === 0) {
+        return '';
+      }
+
+      var references = '\n\n';
+
+      for (var abbr in this.references) {
+        references += "*[".concat(abbr, "]: ").concat(this.references[abbr], "\n");
+      }
+
+      this.references = {}; // reset after appending
+
+      return references;
+    }
+  });
   function toMarkdown(html) {
     return service.turndown(html);
   }
