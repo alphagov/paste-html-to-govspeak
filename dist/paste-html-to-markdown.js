@@ -1148,8 +1148,38 @@
 
   var purify = createDOMPurify();
 
+  var allowedElements = {
+    a: ['href'],
+    abbr: ['title'],
+    blockquote: [],
+    br: [],
+    cite: [],
+    h2: [],
+    h3: [],
+    li: [],
+    ol: [],
+    p: [],
+    ul: []
+  };
+  purify.addHook('uponSanitizeElement', function (node, data) {
+    if (node.nodeName.toLowerCase() === 'p' && node.textContent.trim() === '') {
+      node.parentNode.removeChild(node);
+    }
+  });
+  purify.addHook('uponSanitizeAttribute', function (node, data) {
+    var elementName = node.nodeName.toLowerCase();
+
+    if (allowedElements[elementName]) {
+      data.keepAttr = allowedElements[elementName].indexOf(data.attrName) !== -1;
+    } else {
+      data.keepAttr = false;
+    }
+  });
   function sanitizeHtml(html) {
-    return purify.sanitize(html);
+    return purify.sanitize(html, {
+      ALLOWED_TAGS: Object.keys(allowedElements),
+      KEEP_CONTENT: true
+    });
   }
 
   function extend (destination) {
@@ -2030,10 +2060,17 @@
     )
   }
 
+  var service = new TurndownService({
+    headingStyle: 'atx',
+    bulletListMarker: '-'
+  }); // As a user may have pasted markdown we rather crudley
+  // stop all escaping
+
+  service.escape = function (string) {
+    return string;
+  };
+
   function toMarkdown(html) {
-    var service = new TurndownService({
-      headingStyle: 'atx'
-    });
     return service.turndown(html);
   }
 
