@@ -1148,8 +1148,38 @@
 
   var purify = createDOMPurify();
 
+  var allowedElements = {
+    a: ['href'],
+    abbr: ['title'],
+    blockquote: [],
+    br: [],
+    cite: [],
+    h2: [],
+    h3: [],
+    li: [],
+    ol: [],
+    p: [],
+    ul: []
+  };
+  purify.addHook('uponSanitizeElement', function (node, data) {
+    if (node.nodeName.toLowerCase() === 'p' && node.textContent.trim() === '') {
+      node.parentNode.removeChild(node);
+    }
+  });
+  purify.addHook('uponSanitizeAttribute', function (node, data) {
+    var elementName = node.nodeName.toLowerCase();
+
+    if (allowedElements[elementName]) {
+      data.keepAttr = allowedElements[elementName].indexOf(data.attrName) !== -1;
+    } else {
+      data.keepAttr = false;
+    }
+  });
   function sanitizeHtml(html) {
-    return purify.sanitize(html);
+    return purify.sanitize(html, {
+      ALLOWED_TAGS: Object.keys(allowedElements),
+      KEEP_CONTENT: true
+    });
   }
 
   function extend (destination) {
@@ -2030,10 +2060,42 @@
     )
   }
 
+  var service = new TurndownService({
+    headingStyle: 'atx',
+    bulletListMarker: '-'
+  }); // As a user may have pasted markdown we rather crudley
+  // stop all escaping
+
+  service.escape = function (string) {
+    return string;
+  };
+
+  service.addRule('abbr', {
+    filter: function filter(node) {
+      return node.nodeName.toLowerCase() === 'abbr' && node.getAttribute('title');
+    },
+    replacement: function replacement(content, node) {
+      this.references[content] = node.getAttribute('title');
+      return content;
+    },
+    references: {},
+    append: function append() {
+      if (Object.keys(this.references).length === 0) {
+        return '';
+      }
+
+      var references = '\n\n';
+
+      for (var abbr in this.references) {
+        references += "*[".concat(abbr, "]: ").concat(this.references[abbr], "\n");
+      }
+
+      this.references = {}; // reset after appending
+
+      return references;
+    }
+  });
   function toMarkdown(html) {
-    var service = new TurndownService({
-      headingStyle: 'atx'
-    });
     return service.turndown(html);
   }
 
