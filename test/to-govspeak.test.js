@@ -1,9 +1,9 @@
 /* eslint-env jest */
 
-import toMarkdown from '../src/to-markdown'
+import toGovspeak from '../src/to-govspeak'
 
-it('converts HTML to markdown', () => {
-  expect(toMarkdown('<h2>Hello</h2>')).toEqual('## Hello')
+it('converts HTML to govspeak', () => {
+  expect(toGovspeak('<h2>Hello</h2>')).toEqual('## Hello')
 })
 
 it('converts lists to a dash bullet style', () => {
@@ -13,12 +13,12 @@ it('converts lists to a dash bullet style', () => {
       <li>Item 2</li>
     </ul>
   `
-  expect(toMarkdown(html)).toEqual('-   Item 1\n-   Item 2')
+  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
 })
 
 it("doesn't escape markdown", () => {
   const html = '<p>[Markdown](link)</p>'
-  expect(toMarkdown(html)).toEqual('[Markdown](link)')
+  expect(toGovspeak(html)).toEqual('[Markdown](link)')
 })
 
 it('converts abbr elements to references', () => {
@@ -31,7 +31,7 @@ it('converts abbr elements to references', () => {
     <p>
   `
 
-  expect(toMarkdown(html)).toEqual(
+  expect(toGovspeak(html)).toEqual(
     'Documents on the web are wrote using HTML and styled with CSS. These ' +
     'are both examples of web standards.\n\n' +
     '*[HTML]: Hypertext Markup Language\n' +

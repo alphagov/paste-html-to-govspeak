@@ -2095,7 +2095,7 @@
       return references;
     }
   });
-  function toMarkdown(html) {
+  function toGovspeak(html) {
     return service.turndown(html);
   }
 
@@ -2219,7 +2219,7 @@
     var html = htmlFromPasteEvent(event);
 
     if (html && html.length) {
-      insertTextAtCursor(element, toMarkdown(sanitizeHtml(html)));
+      insertTextAtCursor(element, toGovspeak(sanitizeHtml(html)));
       event.preventDefault();
     }
   }
