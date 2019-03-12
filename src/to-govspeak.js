@@ -32,6 +32,6 @@ service.addRule('abbr', {
   }
 })
 
-export default function toMarkdown (html) {
+export default function toGovspeak (html) {
   return service.turndown(html)
 }
