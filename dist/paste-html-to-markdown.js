@@ -2206,21 +2206,33 @@
     }
   }
 
-  function pasteHtmlUsingHiddenElement(event) {
-    var ieHiddenElement = event.target;
-    setTimeout(function () {
-      var textarea = document.getElementById(ieHiddenElement.dataset.textarea);
-      var html = ieHiddenElement.innerHTML;
-      insertTextAtCursor(textarea, toMarkdown(sanitizeHtml(html)));
-      ieHiddenElement.innerHTML = '';
-    }, 0);
+  function createHiddenElement() {
+    var ieHiddenElement = document.createElement('div');
+    ieHiddenElement.setAttribute('contenteditable', true);
+    ieHiddenElement.setAttribute('style', 'position: absolute; top:0; left: 0; opacity: 0;');
+    document.body.appendChild(ieHiddenElement);
+    return ieHiddenElement;
+  }
+
+  function removeElement(node) {
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+  }
+
+  function getHtmlUsingHiddenElement() {
+    var ieHiddenElement = createHiddenElement();
+    ieHiddenElement.focus();
+    document.execCommand('paste');
+    var html = ieHiddenElement.innerHTML;
+    removeElement(ieHiddenElement);
+    return html;
   }
 
   function htmlFromPasteEvent(event) {
     if (window.clipboardData) {
       // IE11
-      pasteHtmlUsingHiddenElement(event);
-      return false;
+      return getHtmlUsingHiddenElement();
     } else if (event.clipboardData) {
       // Chrome, Edge, Firefox & Safari
       return event.clipboardData.getData('text/html');

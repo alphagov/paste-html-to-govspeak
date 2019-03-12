@@ -4,20 +4,10 @@
     <title>Example</title>
   </head>
   <body>
-    <textarea rows=20 cols=60 placeholder="paste into here" id="paste-textarea"></textarea>
-    <div contenteditable="true" data-textarea="paste-textarea"></div>
+    <textarea rows=20 cols=60 placeholder="paste into here"></textarea>
     <script src="../dist/paste-html-to-markdown.js"></script>
     <script>
-      var textarea = document.querySelector('textarea')
-      if (window.clipboardData) {
-        var ieHiddenElement = document.querySelector('div[contenteditable="true"]')
-        textarea.addEventListener('beforepaste', function() {
-          ieHiddenElement.focus()
-        }, true)
-        ieHiddenElement.addEventListener('paste', window.pasteHtmlToGovspeak)
-      } else {
-        textarea.addEventListener('paste', window.pasteHtmlToGovspeak)
-      }
+      document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
     </script>
   </body>
 </html>
