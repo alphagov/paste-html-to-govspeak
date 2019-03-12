@@ -30,7 +30,7 @@ domPurify.addHook('uponSanitizeAttribute', (node, data) => {
   }
 })
 
-export default function sanitizeHtml (html) {
+export default function sanitiseHtml (html) {
   return domPurify.sanitize(html, {
     ALLOWED_TAGS: Object.keys(allowedElements),
     KEEP_CONTENT: true

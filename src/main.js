@@ -1,4 +1,4 @@
-import sanitizeHtml from './sanitize-html'
+import sanitiseHtml from './sanitise-html'
 import toGovspeak from './to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
 
@@ -30,7 +30,7 @@ export default function pasteHtmlToGovspeak (event) {
   triggerPasteEvent(element, 'htmlinput', html)
 
   if (html && html.length) {
-    const sanitised = sanitizeHtml(html)
+    const sanitised = sanitiseHtml(html)
     triggerPasteEvent(element, 'sanitise', sanitised)
 
     const govspeak = toGovspeak(sanitised)
