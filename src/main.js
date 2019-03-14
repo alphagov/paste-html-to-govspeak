@@ -1,4 +1,4 @@
-import sanitizeHtml from './sanitize-html'
+import sanitiseHtml from './sanitise-html'
 import toGovspeak from './to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
 
@@ -9,13 +9,34 @@ function htmlFromPasteEvent (event) {
   return event.clipboardData.getData('text/html')
 }
 
+function triggerPasteEvent (element, eventName, detail) {
+  let params = { bubbles: false, cancelable: false, detail: detail || null }
+  let event
+
+  if (typeof window.CustomEvent === 'function') {
+    event = new window.CustomEvent(eventName, params)
+  } else {
+    event = document.createEvent('CustomEvent')
+    event.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail)
+  }
+
+  element.dispatchEvent(event)
+}
+
 export default function pasteHtmlToGovspeak (event) {
   const element = event.target
 
   const html = htmlFromPasteEvent(event)
+  triggerPasteEvent(element, 'htmlinput', html)
 
   if (html && html.length) {
-    insertTextAtCursor(element, toGovspeak(sanitizeHtml(html)))
+    const sanitised = sanitiseHtml(html)
+    triggerPasteEvent(element, 'sanitise', sanitised)
+
+    const govspeak = toGovspeak(sanitised)
+    triggerPasteEvent(element, 'govspeak', govspeak)
+
+    insertTextAtCursor(element, govspeak)
     event.preventDefault()
   }
 }

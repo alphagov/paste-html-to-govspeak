@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Debug Example</title>
+    <style>
+      textarea {
+        height: 300px;
+      }
+      pre {
+        min-height: 50px;
+        max-height: 400px;
+        overflow-y: scroll;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Debug Example</h1>
+
+    <h2>Input</h2>
+    <textarea rows=20 cols=60 placeholder="paste into here"></textarea>
+
+    <h2>Data from last paste</h2>
+
+    <h3>HTML Input</h3>
+    <pre id="html-input"></pre>
+
+    <h3>Sanitised HTML</h3>
+    <pre id="sanitised-html"></pre>
+
+    <h3>Govspeak</h3>
+    <pre id="govspeak"></pre>
+
+    <script src="../dist/paste-html-to-markdown.js"></script>
+    <script>
+      var textarea = document.querySelector('textarea')
+      var htmlInputElement = document.getElementById('html-input')
+      var sanitisedHtmlElement = document.getElementById('sanitised-html')
+      var govspeakElement = document.getElementById('govspeak')
+
+      textarea.addEventListener('paste', function () {
+        sanitisedHtmlElement.textContent = ''
+        govspeakElement.textContent = ''
+      })
+
+      textarea.addEventListener('paste', window.pasteHtmlToGovspeak)
+
+      textarea.addEventListener('htmlinput', function (e) {
+        if (e.detail) {
+          htmlInputElement.textContent = e.detail
+        } else {
+          htmlInputElement.textContent = 'HTML was not pasted'
+        }
+      })
+
+      textarea.addEventListener('sanitise', function (e) {
+        sanitisedHtmlElement.textContent = e.detail
+      })
+
+      textarea.addEventListener('govspeak', function (e) {
+        govspeakElement.textContent = e.detail
+      })
+    </script>
+  </body>
+</html>

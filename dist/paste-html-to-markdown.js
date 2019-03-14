@@ -1175,7 +1175,7 @@
       data.keepAttr = false;
     }
   });
-  function sanitizeHtml(html) {
+  function sanitiseHtml(html) {
     return purify.sanitize(html, {
       ALLOWED_TAGS: Object.keys(allowedElements),
       KEEP_CONTENT: true
@@ -2214,12 +2214,35 @@
     return event.clipboardData.getData('text/html');
   }
 
+  function triggerPasteEvent(element, eventName, detail) {
+    var params = {
+      bubbles: false,
+      cancelable: false,
+      detail: detail || null
+    };
+    var event;
+
+    if (typeof window.CustomEvent === 'function') {
+      event = new window.CustomEvent(eventName, params);
+    } else {
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
+    }
+
+    element.dispatchEvent(event);
+  }
+
   function pasteHtmlToGovspeak(event) {
     var element = event.target;
     var html = htmlFromPasteEvent(event);
+    triggerPasteEvent(element, 'htmlinput', html);
 
     if (html && html.length) {
-      insertTextAtCursor(element, toGovspeak(sanitizeHtml(html)));
+      var sanitised = sanitiseHtml(html);
+      triggerPasteEvent(element, 'sanitise', sanitised);
+      var govspeak = toGovspeak(sanitised);
+      triggerPasteEvent(element, 'govspeak', govspeak);
+      insertTextAtCursor(element, govspeak);
       event.preventDefault();
     }
   }
