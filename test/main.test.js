@@ -66,31 +66,6 @@ describe('htmlinput event', () => {
   })
 })
 
-describe('sanitise event', () => {
-  it('has sanitised HTML as the event detail', () => {
-    const listener = jest.fn()
-    const html = '<p onclick="return false">Text</p>'
-
-    textarea.addEventListener('sanitise', listener)
-    textarea.dispatchEvent(createHtmlPasteEvent(html))
-
-    expect(listener).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: '<p>Text</p>'
-      })
-    )
-  })
-
-  it("isn't called if no HTML is pasted", () => {
-    const listener = jest.fn()
-
-    textarea.addEventListener('sanitise', listener)
-    textarea.dispatchEvent(createHtmlPasteEvent(null))
-
-    expect(listener).not.toHaveBeenCalled()
-  })
-})
-
 describe('govspeak event', () => {
   it('has govspeak as the event detail', () => {
     const listener = jest.fn()
