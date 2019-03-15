@@ -1,11 +1,13 @@
 import toGovspeak from './to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
+import htmlFromHiddenElement from './html-from-hidden-element'
 
 function htmlFromPasteEvent (event) {
-  if (!event.clipboardData) {
-    return
+  if (event.clipboardData) {
+    return event.clipboardData.getData('text/html')
+  } else if (window.clipboardData) {
+    return htmlFromHiddenElement()
   }
-  return event.clipboardData.getData('text/html')
 }
 
 function textFromPasteEvent (event) {

@@ -2,9 +2,14 @@
 
 import pasteHtmlToGovspeak from '../src/main'
 
+let mockHtmlFromHiddenElement
 let textarea
 
+jest.mock('../src/html-from-hidden-element', () => () => mockHtmlFromHiddenElement)
+
 beforeEach(() => {
+  mockHtmlFromHiddenElement = null
+
   textarea = document.createElement('textarea')
   textarea.addEventListener('paste', pasteHtmlToGovspeak)
 
