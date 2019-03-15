@@ -11,6 +11,11 @@
         max-height: 400px;
         overflow-y: scroll;
         border: 1px solid black;
+        white-space: pre-wrap;
+      }
+
+      #html-input {
+        white-space: pre;
       }
     </style>
   </head>
@@ -29,6 +34,7 @@
     <pre id="govspeak"></pre>
 
     <script src="../dist/paste-html-to-markdown.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.9.0/beautify-html.js"></script>
     <script>
       var textarea = document.querySelector('textarea')
       var htmlInputElement = document.getElementById('html-input')
@@ -42,7 +48,7 @@
 
       textarea.addEventListener('htmlinput', function (e) {
         if (e.detail) {
-          htmlInputElement.textContent = e.detail
+          htmlInputElement.textContent = prettyHtml(e.detail)
         } else {
           htmlInputElement.textContent = 'HTML was not pasted'
         }
@@ -51,6 +57,18 @@
       textarea.addEventListener('govspeak', function (e) {
         govspeakElement.textContent = e.detail
       })
+
+      function prettyHtml (html) {
+        try {
+          return window.html_beautify(html, {
+            indent_size: 2,
+            wrap_line_length: 160,
+            wrap_attributes: 'force-expand-multiline'
+          })
+        } catch {
+          return html
+        }
+      }
     </script>
   </body>
 </html>
