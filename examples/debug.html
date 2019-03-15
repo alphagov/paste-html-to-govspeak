@@ -25,6 +25,9 @@
     <h3>HTML Input</h3>
     <pre id="html-input"></pre>
 
+    <h3>Text Input</h3>
+    <pre id="text-input"></pre>
+
     <h3>Govspeak</h3>
     <pre id="govspeak"></pre>
 
@@ -32,6 +35,7 @@
     <script>
       var textarea = document.querySelector('textarea')
       var htmlInputElement = document.getElementById('html-input')
+      var textInputElement = document.getElementById('text-input')
       var govspeakElement = document.getElementById('govspeak')
 
       textarea.addEventListener('paste', function () {
@@ -40,11 +44,19 @@
 
       textarea.addEventListener('paste', window.pasteHtmlToGovspeak)
 
-      textarea.addEventListener('htmlinput', function (e) {
+      textarea.addEventListener('htmlpaste', function (e) {
         if (e.detail) {
           htmlInputElement.textContent = e.detail
         } else {
           htmlInputElement.textContent = 'HTML was not pasted'
+        }
+      })
+
+      textarea.addEventListener('textpaste', function (e) {
+        if (e.detail) {
+          textInputElement.textContent = e.detail
+        } else {
+          textInputElement.textContent = 'Text was not pasted'
         }
       })
 

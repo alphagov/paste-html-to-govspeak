@@ -11,12 +11,15 @@ beforeEach(() => {
   document.execCommand = jest.fn()
 })
 
-function createHtmlPasteEvent (html) {
+function createHtmlPasteEvent (html = null, text = null) {
   const event = new window.Event('paste')
   event.clipboardData = {
     getData: (type) => {
       if (type === 'text/html') {
         return html
+      }
+      if (type === 'text/plain') {
+        return text
       }
     }
   }
@@ -37,12 +40,12 @@ it('converts HTML to govspeak if HTML is pasted', () => {
   expect(textarea.value).toEqual('## Hello')
 })
 
-describe('htmlinput event', () => {
+describe('htmlpaste event', () => {
   it('has raw HTML as the detail if HTML is pasted', () => {
     const listener = jest.fn()
     const html = '<script>alert("hi")</script>'
 
-    textarea.addEventListener('htmlinput', listener)
+    textarea.addEventListener('htmlpaste', listener)
     textarea.dispatchEvent(createHtmlPasteEvent(html))
 
     expect(listener).toHaveBeenCalledWith(
@@ -55,8 +58,37 @@ describe('htmlinput event', () => {
   it('has null as the detail if no HTML is pasted', () => {
     const listener = jest.fn()
 
-    textarea.addEventListener('htmlinput', listener)
-    textarea.dispatchEvent(createHtmlPasteEvent(null))
+    textarea.addEventListener('htmlpaste', listener)
+    textarea.dispatchEvent(createHtmlPasteEvent())
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: null
+      })
+    )
+  })
+})
+
+describe('textpaste event', () => {
+  it('has text as the detail if text is available is pasted', () => {
+    const listener = jest.fn()
+    const text = 'Hello'
+
+    textarea.addEventListener('textpaste', listener)
+    textarea.dispatchEvent(createHtmlPasteEvent('<h2>Hello</h2>', text))
+
+    expect(listener).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: text
+      })
+    )
+  })
+
+  it('has null as the detail if no text is pasted', () => {
+    const listener = jest.fn()
+
+    textarea.addEventListener('textpaste', listener)
+    textarea.dispatchEvent(createHtmlPasteEvent())
 
     expect(listener).toHaveBeenCalledWith(
       expect.objectContaining({

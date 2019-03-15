@@ -8,6 +8,14 @@ function htmlFromPasteEvent (event) {
   return event.clipboardData.getData('text/html')
 }
 
+function textFromPasteEvent (event) {
+  if (event.clipboardData) {
+    return event.clipboardData.getData('text/plain')
+  } else if (window.clipboardData) {
+    return window.clipboardData.getData('Text')
+  }
+}
+
 function triggerPasteEvent (element, eventName, detail) {
   let params = { bubbles: false, cancelable: false, detail: detail || null }
   let event
@@ -26,7 +34,10 @@ export default function pasteHtmlToGovspeak (event) {
   const element = event.target
 
   const html = htmlFromPasteEvent(event)
-  triggerPasteEvent(element, 'htmlinput', html)
+  triggerPasteEvent(element, 'htmlpaste', html)
+
+  const text = textFromPasteEvent(event)
+  triggerPasteEvent(element, 'textpaste', text)
 
   if (html && html.length) {
     const govspeak = toGovspeak(html)
