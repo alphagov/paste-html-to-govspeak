@@ -1,14 +1,11 @@
-import sanitiseHtml from './sanitise-html'
 import toGovspeak from './to-govspeak'
-import htmlFromHiddenElement from './html-from-hidden-element'
 import insertTextAtCursor from 'insert-text-at-cursor'
 
 function htmlFromPasteEvent (event) {
-  if (event.clipboardData) {
-    return event.clipboardData.getData('text/html')
-  } else if (window.clipboardData) {
-    return htmlFromHiddenElement()
+  if (!event.clipboardData) {
+    return
   }
+  return event.clipboardData.getData('text/html')
 }
 
 function triggerPasteEvent (element, eventName, detail) {
@@ -32,10 +29,7 @@ export default function pasteHtmlToGovspeak (event) {
   triggerPasteEvent(element, 'htmlinput', html)
 
   if (html && html.length) {
-    const sanitised = sanitiseHtml(html)
-    triggerPasteEvent(element, 'sanitise', sanitised)
-
-    const govspeak = toGovspeak(sanitised)
+    const govspeak = toGovspeak(html)
     triggerPasteEvent(element, 'govspeak', govspeak)
 
     insertTextAtCursor(element, govspeak)

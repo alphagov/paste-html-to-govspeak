@@ -27,7 +27,6 @@
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "babel-jest": "^24.1.0",
-    "dompurify": "^1.0.10",
     "insert-text-at-cursor": "^0.1.2",
     "jest": "^24.1.0",
     "npm-watch": "^0.6.0",
