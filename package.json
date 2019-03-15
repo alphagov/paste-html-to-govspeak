@@ -1,7 +1,8 @@
 {
   "name": "paste-html-to-govspeak",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Converts HTML formatted rich content to govspeak format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.",
+  "main": "dist/paste-html-to-markdown.js",
   "scripts": {
     "prebuild": "rm -rf dist/*",
     "build": "rollup -c",
@@ -20,7 +21,22 @@
   "watch": {
     "build": "src/*.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alphagov/paste-html-to-govspeak.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alphagov/paste-html-to-govspeak/issues"
+  },
+  "homepage": "https://github.com/alphagov/paste-html-to-govspeak#readme",
+  "author": {
+    "name": "GOV.UK Dev",
+    "email": "govuk-dev@digital.cabinet-office.gov.uk"
+  },
+  "keywords": [
+    "govuk",
+    "govspeak"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
