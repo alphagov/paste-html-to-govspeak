@@ -1,13 +1,27 @@
 <!doctype html>
-<html>
+<html lang="en" class="govuk-template">
   <head>
-    <title>Example</title>
+    <meta charset="utf-8">
+    <title>paste-html-to-govspeak</title>
+    <link href="govuk-frontend-2.7.0.min.css" rel="stylesheet">
   </head>
-  <body>
-    <textarea rows=20 cols=60 placeholder="paste into here"></textarea>
-    <script src="../dist/paste-html-to-markdown.js"></script>
-    <script>
-      document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
-    </script>
+  <body class="govuk-template__body">
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper">
+        <h1 class="govuk-heading-xl">paste-html-to-govspeak</h1>
+        <p class="govuk-body">
+          A tool that converts pastes HTML into
+          <a href="https://github.com/alphagov/govspeak" target="_blank">govspeak</a>.
+          For more information check the
+          <a href="https://github.com/alphagov/paste-html-to-govspeak#readme" target="_blank">repo</a>.<br>
+          To test paste content into the field below.
+        </p>
+        <textarea class="govuk-textarea" rows=20></textarea>
+        <script src="../dist/paste-html-to-markdown.js"></script>
+        <script>
+          document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
+        </script>
+      </main>
+    </div>
   </body>
 </html>
