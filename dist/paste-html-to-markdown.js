@@ -1095,6 +1095,14 @@
     return event.clipboardData.getData('text/html');
   }
 
+  function textFromPasteEvent(event) {
+    if (event.clipboardData) {
+      return event.clipboardData.getData('text/plain');
+    } else if (window.clipboardData) {
+      return window.clipboardData.getData('Text');
+    }
+  }
+
   function triggerPasteEvent(element, eventName, detail) {
     var params = {
       bubbles: false,
@@ -1116,7 +1124,9 @@
   function pasteHtmlToGovspeak(event) {
     var element = event.target;
     var html = htmlFromPasteEvent(event);
-    triggerPasteEvent(element, 'htmlinput', html);
+    triggerPasteEvent(element, 'htmlpaste', html);
+    var text = textFromPasteEvent(event);
+    triggerPasteEvent(element, 'textpaste', text);
 
     if (html && html.length) {
       var govspeak = toGovspeak(html);
