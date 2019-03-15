@@ -3,9 +3,12 @@ import insertTextAtCursor from 'insert-text-at-cursor'
 import htmlFromHiddenElement from './html-from-hidden-element'
 
 function htmlFromPasteEvent (event) {
+  // Modern browsers
   if (event.clipboardData) {
     return event.clipboardData.getData('text/html')
-  } else if (window.clipboardData) {
+  } else if (window.clipboardData) { // IE proprietary property
+    // As IE doesn't support event.clipboardData we have to use a hack to
+    // access HTML from a paste
     return htmlFromHiddenElement()
   }
 }

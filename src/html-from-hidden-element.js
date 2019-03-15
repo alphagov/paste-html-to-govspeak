@@ -1,3 +1,8 @@
+// This file provides a technique to maintain html that is pasted in IE
+// despite the lack of support for clipboardData.getData('text/html').
+// This uses a technique of creating a hidden element and pasting into that.
+// Then acessing the innerHTML of it before finally removing it. This approach
+// is explained more thoroughly in: https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
 function createHiddenElement () {
   let ieHiddenElement = document.createElement('div')
   ieHiddenElement.setAttribute('contenteditable', true)
