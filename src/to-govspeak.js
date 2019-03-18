@@ -88,6 +88,23 @@ service.addRule('removeEmptyParagraphs', {
   replacement: () => ''
 })
 
+function removeBrParagraphs (govspeak) {
+  // This finds places where we have a br in a paragraph on it's own and
+  // removes it.
+  //
+  // E.g. if we have HTML of <b><p>Text</p><br><p>More text</p></b> (as google
+  // docs can easily produce) which produces govspeak of
+  // "Text\n\n  \n\nMore Text". This regexp can strip this back to be
+  // Text\n\nMore Text
+  const regExp = new RegExp(`\n(${service.options.br}\n)+\n?`, 'g')
+  return govspeak.replace(regExp, '\n')
+}
+
+function postProcess (govspeak) {
+  return removeBrParagraphs(govspeak)
+}
+
 export default function toGovspeak (html) {
-  return service.turndown(html)
+  const govspeak = service.turndown(html)
+  return postProcess(govspeak)
 }

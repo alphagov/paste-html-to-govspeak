@@ -86,3 +86,15 @@ it('removes empty paragraphs', () => {
     'Not empty\n\nNot empty either'
   )
 })
+
+it('removes rogue br elements', () => {
+  const html = `
+    <p>Not empty</p>
+    <br>
+    <span><br></span>
+    <p>Not empty either</p>
+  `
+  expect(toGovspeak(html)).toEqual(
+    'Not empty\n\nNot empty either'
+  )
+})
