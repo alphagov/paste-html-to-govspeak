@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import htmlFromHiddenElement from '../src/html-from-hidden-element'
+import legacyHtmlFromPaste from '../src/legacy-html-from-paste'
 
 it('returns the HTML entered by a paste exec command', () => {
   const html = '<p>Some text</p>'
@@ -12,6 +12,6 @@ it('returns the HTML entered by a paste exec command', () => {
     }
   }
 
-  expect(htmlFromHiddenElement()).toEqual(html)
+  expect(legacyHtmlFromPaste()).toEqual(html)
   expect(document.body.lastChild).toBe(null)
 })

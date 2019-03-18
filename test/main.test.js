@@ -2,9 +2,14 @@
 
 import pasteHtmlToGovspeak from '../src/main'
 
+let mockLegacyHtmlFromPaste
 let textarea
 
+jest.mock('../src/legacy-html-from-paste.js', () => () => mockLegacyHtmlFromPaste)
+
 beforeEach(() => {
+  mockLegacyHtmlFromPaste = null
+
   textarea = document.createElement('textarea')
   textarea.addEventListener('paste', pasteHtmlToGovspeak)
 
@@ -37,6 +42,12 @@ it("maintains browser default behaviour if HTML isn't pasted", () => {
 
 it('converts HTML to govspeak if HTML is pasted', () => {
   textarea.dispatchEvent(createHtmlPasteEvent('<h2>Hello</h2>'))
+  expect(textarea.value).toEqual('## Hello')
+})
+
+it("supports pasting in legacy browsers that don't have a clipboardData property", () => {
+  mockLegacyHtmlFromPaste = '<h2>Hello</h2>'
+  textarea.dispatchEvent(new window.Event('paste'))
   expect(textarea.value).toEqual('## Hello')
 })
 

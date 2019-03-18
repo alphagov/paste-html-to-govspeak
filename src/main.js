@@ -1,11 +1,16 @@
 import toGovspeak from './to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
+import legacyHtmlFromPaste from './legacy-html-from-paste'
 
 function htmlFromPasteEvent (event) {
-  if (!event.clipboardData) {
-    return
+  // Modern browsers
+  if (event.clipboardData) {
+    return event.clipboardData.getData('text/html')
+  } else {
+    // IE doesn't support event.clipboardData, whereas it's supported by most
+    // other major browsers
+    return legacyHtmlFromPaste()
   }
-  return event.clipboardData.getData('text/html')
 }
 
 function textFromPasteEvent (event) {
