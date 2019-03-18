@@ -1,15 +1,15 @@
 import toGovspeak from './to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
-import htmlFromHiddenElement from './html-from-hidden-element'
+import legacyHtmlFromPaste from './legacy-html-from-paste'
 
 function htmlFromPasteEvent (event) {
   // Modern browsers
   if (event.clipboardData) {
     return event.clipboardData.getData('text/html')
-  } else if (window.clipboardData) { // IE proprietary property
-    // As IE doesn't support event.clipboardData we have to use a hack to
-    // access HTML from a paste
-    return htmlFromHiddenElement()
+  } else {
+    // IE doesn't support event.clipboardData, whereas it's supported by most
+    // other major browsers
+    return legacyHtmlFromPaste()
   }
 }
 
