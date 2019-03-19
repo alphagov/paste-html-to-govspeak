@@ -83,7 +83,8 @@
                 wrap_line_length: 160,
                 wrap_attributes: 'force-expand-multiline'
               })
-            } catch {
+            } catch (err) {
+              console.error(err)
               return html
             }
           }
