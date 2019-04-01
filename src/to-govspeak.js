@@ -88,6 +88,12 @@ service.addRule('removeEmptyParagraphs', {
   replacement: () => ''
 })
 
+// remove style elements
+service.addRule('style', {
+  filter: ['style'],
+  replacement: () => ''
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.
