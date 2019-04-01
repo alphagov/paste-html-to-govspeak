@@ -982,6 +982,15 @@
     replacement: function replacement() {
       return '';
     }
+  }); // strip paragraph elements within list items
+
+  service.addRule('stripParagraphsInListItems', {
+    filter: function filter(node) {
+      return node.nodeName.toLowerCase() === 'p' && node.parentNode.nodeName.toLowerCase() === 'li';
+    },
+    replacement: function replacement(content) {
+      return content;
+    }
   });
 
   function removeBrParagraphs(govspeak) {
