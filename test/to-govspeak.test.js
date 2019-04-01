@@ -98,3 +98,7 @@ it('removes rogue br elements', () => {
     'Not empty\n\nNot empty either'
   )
 })
+
+it('removes style elements', () => {
+  expect(toGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
+})
