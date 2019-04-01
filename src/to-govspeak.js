@@ -94,6 +94,14 @@ service.addRule('style', {
   replacement: () => ''
 })
 
+// strip paragraph elements within list items
+service.addRule('stripParagraphsInListItems', {
+  filter: (node) => {
+    return node.nodeName.toLowerCase() === 'p' && node.parentNode.nodeName.toLowerCase() === 'li'
+  },
+  replacement: (content) => content
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.
