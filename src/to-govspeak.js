@@ -103,6 +103,17 @@ service.addRule('stripParagraphsInListItems', {
   replacement: (content) => content
 })
 
+service.addRule('cleanUpNestedLinks', {
+  filter: (node) => {
+    if (node.nodeName.toLowerCase() === 'a' && node.previousSibling) {
+      return node.previousSibling.textContent.match(/\]\($/)
+    }
+  },
+  replacement: (content, node) => {
+    return node.getAttribute('href')
+  }
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.
