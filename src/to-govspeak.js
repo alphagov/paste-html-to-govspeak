@@ -121,9 +121,17 @@ function cleanUpNestedLinks (govspeak) {
   return govspeak.replace(nestedLinkRegExp, '$1')
 }
 
+function extractHeadingsFromLists (govspeak) {
+  // This finds instances of headings within ordered lists and replaces them
+  // with the headings only. This only applies to H2 and H3.
+  const headingsInListsRegExp = new RegExp(/\d\.\s{2}(#{2,3})/, 'g')
+  return govspeak.replace(headingsInListsRegExp, '$1')
+}
+
 function postProcess (govspeak) {
   let govspeakWithoutNestedLinks = cleanUpNestedLinks(govspeak)
-  return removeBrParagraphs(govspeakWithoutNestedLinks)
+  let govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeakWithoutNestedLinks)
+  return removeBrParagraphs(govspeakWithExtractedHeadings)
 }
 
 export default function toGovspeak (html) {
