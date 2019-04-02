@@ -975,6 +975,22 @@
     replacement: function replacement() {
       return '';
     }
+  }); // remove style elements
+
+  service.addRule('style', {
+    filter: ['style'],
+    replacement: function replacement() {
+      return '';
+    }
+  }); // strip paragraph elements within list items
+
+  service.addRule('stripParagraphsInListItems', {
+    filter: function filter(node) {
+      return node.nodeName.toLowerCase() === 'p' && node.parentNode.nodeName.toLowerCase() === 'li';
+    },
+    replacement: function replacement(content) {
+      return content;
+    }
   });
 
   function removeBrParagraphs(govspeak) {
@@ -989,8 +1005,24 @@
     return govspeak.replace(regExp, '\n');
   }
 
+  function cleanUpNestedLinks(govspeak) {
+    // This finds instances of nested links and replaces them with the captured
+    // second occurrence of the URL.
+    var nestedLinkRegExp = new RegExp(/]\(\[.+?(?=])(](\().+?\))\)/, 'g');
+    return govspeak.replace(nestedLinkRegExp, '$1');
+  }
+
+  function extractHeadingsFromLists(govspeak) {
+    // This finds instances of headings within ordered lists and replaces them
+    // with the headings only. This only applies to H2 and H3.
+    var headingsInListsRegExp = new RegExp(/\d\.\s{2}(#{2,3})/, 'g');
+    return govspeak.replace(headingsInListsRegExp, '$1');
+  }
+
   function postProcess$1(govspeak) {
-    return removeBrParagraphs(govspeak);
+    var govspeakWithoutNestedLinks = cleanUpNestedLinks(govspeak);
+    var govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeakWithoutNestedLinks);
+    return removeBrParagraphs(govspeakWithExtractedHeadings);
   }
 
   function toGovspeak(html) {
