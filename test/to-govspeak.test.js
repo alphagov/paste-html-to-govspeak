@@ -112,3 +112,11 @@ it('strips paragraph elements within a list item', () => {
   `
   expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
 })
+
+it('removes nested links', () => {
+  const html = `
+    [correct link markdown](https://www.gov.uk/)
+    [nested link](<a href="https://www.gov.uk/">https://www.gov.uk/</a>)
+  `
+  expect(toGovspeak(html)).toEqual('[correct link markdown](https://www.gov.uk/) [nested link](https://www.gov.uk/)')
+})

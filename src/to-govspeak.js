@@ -114,8 +114,16 @@ function removeBrParagraphs (govspeak) {
   return govspeak.replace(regExp, '\n')
 }
 
+function cleanUpNestedLinks (govspeak) {
+  // This finds instances of nested links and replaces them with the captured
+  // second occurrence of the URL.
+  const nestedLinkRegExp = new RegExp(/]\(\[.+?(?=])(](\().+?\))\)/, 'g')
+  return govspeak.replace(nestedLinkRegExp, '$1')
+}
+
 function postProcess (govspeak) {
-  return removeBrParagraphs(govspeak)
+  let govspeakWithoutNestedLinks = cleanUpNestedLinks(govspeak)
+  return removeBrParagraphs(govspeakWithoutNestedLinks)
 }
 
 export default function toGovspeak (html) {
