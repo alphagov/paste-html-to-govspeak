@@ -102,3 +102,13 @@ it('removes rogue br elements', () => {
 it('removes style elements', () => {
   expect(toGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
 })
+
+it('extracts headers from lists', () => {
+  const html = `
+    <ol>
+      <li><h2>Item 1</h2></li>
+      <li><h3>Item 2</h3></li>
+    </ol>
+  `
+  expect(toGovspeak(html)).toEqual('## Item 1\n    \n### Item 2')
+})

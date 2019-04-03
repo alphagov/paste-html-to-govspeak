@@ -106,8 +106,16 @@ function removeBrParagraphs (govspeak) {
   return govspeak.replace(regExp, '\n')
 }
 
+function extractHeadingsFromLists (govspeak) {
+  // This finds instances of headings within ordered lists and replaces them
+  // with the headings only. This only applies to H2 and H3.
+  const headingsInListsRegExp = new RegExp(/\d\.\s{2}(#{2,3})/, 'g')
+  return govspeak.replace(headingsInListsRegExp, '$1')
+}
+
 function postProcess (govspeak) {
-  return removeBrParagraphs(govspeak)
+  let govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeak)
+  return removeBrParagraphs(govspeakWithExtractedHeadings)
 }
 
 export default function toGovspeak (html) {
