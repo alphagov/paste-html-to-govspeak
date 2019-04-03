@@ -112,3 +112,13 @@ it('extracts headers from lists', () => {
   `
   expect(toGovspeak(html)).toEqual('## Item 1\n    \n### Item 2')
 })
+
+it('strips paragraph elements within a list item', () => {
+  const html = `
+    <ul>
+      <li><p>Item 1</p></li>
+      <li><p>Item 2</p></li>
+    </ul>
+  `
+  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
+})
