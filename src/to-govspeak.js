@@ -114,6 +114,27 @@ service.addRule('cleanUpNestedLinks', {
   }
 })
 
+// Google docs has a habit of producing nested lists that are not nested
+// with valid HTML. Rather than embedding sub lists inside an <li> element they
+// are nested in the <ul> element.
+service.addRule('invalidNestedLists', {
+  filter: (node) => {
+    const nodeName = node.nodeName.toLowerCase()
+    if (nodeName === 'ul' && node.previousElementSibling) {
+      const previousNodeName = node.previousElementSibling.nodeName.toLowerCase()
+      return previousNodeName === 'li'
+    }
+  },
+  replacement: (content, node) => {
+    content = content
+      .replace(/^\n+/, '') // remove leading newlines
+      .replace(/\n+$/, '') // replace trailing newlines
+      .replace(/\n/gm, '\n    ') // indent
+
+    return '    ' + content + '\n'
+  }
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.

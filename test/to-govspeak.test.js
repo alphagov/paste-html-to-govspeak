@@ -136,3 +136,24 @@ it('removes nested links when link markdown text is not wrapped in an element', 
   `
   expect(toGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
 })
+
+it('fixes an invalid nested unordered list that Google Docs produces', () => {
+  const html = `
+    <ul>
+      <li>Parent</li>
+      <ul>
+        <li>Child</li>
+        <ul>
+          <li>Grand child</li>
+        </ul>
+      </ul>
+      <li>Parent sibling</li>
+    </ul>
+  `
+  expect(toGovspeak(html)).toEqual(
+    '-   Parent\n' +
+    '    -   Child\n' +
+    '        -   Grand child\n' +
+    '-   Parent sibling'
+  )
+})
