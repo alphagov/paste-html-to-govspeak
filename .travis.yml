@@ -4,3 +4,13 @@ node_js:
 script:
   - npm run test
   - npm run build
+# This deploy requires a Github personal access token, so if this breaks it
+# could be that the developer has left GDS.
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  local_dir: examples
+  on:
+    branch: master
