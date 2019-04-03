@@ -3,12 +3,19 @@ import babel from 'rollup-plugin-babel'
 
 export default {
   input: 'src/main.js',
-  output: {
-    file: 'dist/paste-html-to-markdown.js',
-    format: 'umd',
-    name: 'pasteHtmlToGovspeak',
-    sourcemap: true
-  },
+  output: [
+    {
+      file: 'dist/paste-html-to-markdown.js',
+      format: 'umd',
+      name: 'pasteHtmlToGovspeak'
+    },
+    {
+      file: 'examples/dist/paste-html-to-markdown.js',
+      format: 'umd',
+      name: 'pasteHtmlToGovspeak',
+      sourcemap: true
+    }
+  ],
   plugins: [
     resolve(),
     babel({
