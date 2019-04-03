@@ -2,7 +2,19 @@ import TurndownService from 'turndown'
 
 const service = new TurndownService({
   bulletListMarker: '-',
-  listIndent: '   ' // 3 spaces
+  listIndent: '   ', // 3 spaces
+  blankReplacement: (content, node) => {
+    if (node.isBlock) {
+      return '\n\n'
+    }
+
+    // This fixes an issue with turndown where an element with a space
+    // inside can be removed causing a jarring HTML coversion.
+    const hasWhitespace = /\s/.test(node.textContent)
+    const hasFlanking = node.flankingWhitespace.trailing || node.flankingWhitespace.leading
+
+    return hasWhitespace && !hasFlanking ? ' ' : ''
+  }
 })
 
 // As a user may have pasted markdown we rather crudley
