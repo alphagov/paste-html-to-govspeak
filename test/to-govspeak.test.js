@@ -157,3 +157,30 @@ it('fixes an invalid nested unordered list that Google Docs produces', () => {
     '-   Parent sibling'
   )
 })
+
+it('fixes an invalid nested ordered list that Google Docs produces', () => {
+  const html = `
+    <ol>
+      <li>Parent</li>
+      <ol>
+        <li>Child 1</li>
+        <ol>
+          <li>Grand child 1</li>
+          <li>Grand child 2</li>
+        </ol>
+        <li>Child 2</li>
+        <li>Child 3</li>
+      </ol>
+      <li>Parent sibling</li>
+    </ol>
+  `
+  expect(toGovspeak(html)).toEqual(
+    '1.  Parent\n' +
+    '    1.  Child 1\n' +
+    '        1.  Grand child 1\n' +
+    '        2.  Grand child 2\n' +
+    '    2.  Child 2\n' +
+    '    3.  Child 3\n' +
+    '2.  Parent sibling'
+  )
+})

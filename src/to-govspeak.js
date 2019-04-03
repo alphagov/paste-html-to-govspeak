@@ -116,11 +116,11 @@ service.addRule('cleanUpNestedLinks', {
 
 // Google docs has a habit of producing nested lists that are not nested
 // with valid HTML. Rather than embedding sub lists inside an <li> element they
-// are nested in the <ul> element.
+// are nested in the <ul> or <ol> element.
 service.addRule('invalidNestedLists', {
   filter: (node) => {
     const nodeName = node.nodeName.toLowerCase()
-    if (nodeName === 'ul' && node.previousElementSibling) {
+    if ((nodeName === 'ul' || nodeName === 'ol') && node.previousElementSibling) {
       const previousNodeName = node.previousElementSibling.nodeName.toLowerCase()
       return previousNodeName === 'li'
     }
@@ -132,6 +132,33 @@ service.addRule('invalidNestedLists', {
       .replace(/\n/gm, '\n    ') // indent
 
     return '    ' + content + '\n'
+  }
+})
+
+// This is ported from https://github.com/domchristie/turndown/blob/80297cebeae4b35c8d299b1741b383c74eddc7c1/src/commonmark-rules.js#L61-L80
+// It is modified to handle items from the invalidNestedLists as if these
+// are ordered lists they will be output with incorrect numbering.
+service.addRule('listItems', {
+  filter: 'li',
+  replacement: function (content, node, options) {
+    content = content
+      .replace(/^\n+/, '') // remove leading newlines
+      .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
+      .replace(/\n/gm, '\n    ') // indent
+
+    let prefix = options.bulletListMarker + '   '
+    const parent = node.parentNode
+    if (parent.nodeName.toLowerCase() === 'ol') {
+      const start = parent.getAttribute('start')
+      const listItems = Array.prototype.filter.call(
+        parent.children, (element) => element.nodeName.toLowerCase() === 'li'
+      )
+      const index = Array.prototype.indexOf.call(listItems, node)
+      prefix = (start ? Number(start) + index : index + 1) + '.  '
+    }
+    return (
+      prefix + content + (node.nextSibling && !/\n$/.test(content) ? '\n' : '')
+    )
   }
 })
 
