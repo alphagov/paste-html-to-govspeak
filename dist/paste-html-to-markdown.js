@@ -975,6 +975,13 @@
     replacement: function replacement() {
       return '';
     }
+  }); // remove style elements
+
+  service.addRule('style', {
+    filter: ['style'],
+    replacement: function replacement() {
+      return '';
+    }
   });
 
   function removeBrParagraphs(govspeak) {
