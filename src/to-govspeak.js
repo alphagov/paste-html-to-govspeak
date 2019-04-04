@@ -137,7 +137,9 @@ service.addRule('invalidNestedLists', {
 
 // This is ported from https://github.com/domchristie/turndown/blob/80297cebeae4b35c8d299b1741b383c74eddc7c1/src/commonmark-rules.js#L61-L80
 // It is modified to handle items from the invalidNestedLists as if these
-// are ordered lists they will be output with incorrect numbering.
+// are ordered lists they will be output with incorrect numbering. It also
+// removed handling of start attribute of <ol> elements as this has no effect
+// on govspeak.
 service.addRule('listItems', {
   filter: 'li',
   replacement: function (content, node, options) {
@@ -149,12 +151,11 @@ service.addRule('listItems', {
     let prefix = options.bulletListMarker + '   '
     const parent = node.parentNode
     if (parent.nodeName.toLowerCase() === 'ol') {
-      const start = parent.getAttribute('start')
       const listItems = Array.prototype.filter.call(
         parent.children, (element) => element.nodeName.toLowerCase() === 'li'
       )
       const index = Array.prototype.indexOf.call(listItems, node)
-      prefix = (start ? Number(start) + index : index + 1) + '.  '
+      prefix = (index + 1).toString() + '.  '
     }
     return (
       prefix + content + (node.nextSibling && !/\n$/.test(content) ? '\n' : '')
