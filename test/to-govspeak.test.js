@@ -5,7 +5,6 @@ import toGovspeak from '../src/to-govspeak'
 it('converts HTML to govspeak', () => {
   expect(toGovspeak('<p>Hello</p>')).toEqual('Hello')
 })
-
 it("doesn't escape markdown", () => {
   const html = '<p>[Markdown](link)</p>'
   expect(toGovspeak(html)).toEqual('[Markdown](link)')
@@ -183,4 +182,19 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
     '   3. Child 3\n' +
     '2. Parent sibling'
   )
+})
+
+it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
+  const html = `Some text<span>&nbsp;</span>and some more text`
+
+  expect(toGovspeak(html)).toEqual('Some text and some more text')
+})
+
+// This test is here to document an undesirable case that took a lot of
+// investigation. This should be resolved when/if https://github.com/domchristie/turndown/pull/281
+// is released.
+it('Maintains behaviour where a <span> </span> produces a double space', () => {
+  const html = `Some text<span> </span>and some more text`
+
+  expect(toGovspeak(html)).toEqual('Some text  and some more text')
 })
