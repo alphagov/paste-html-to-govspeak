@@ -27,7 +27,7 @@ it('converts lists to a dash bullet style', () => {
       <li>Item 2</li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
+  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('maintains H2 and H3 headers', () => {
@@ -110,7 +110,7 @@ it('extracts headers from lists', () => {
       <li><h3>Item 2</h3></li>
     </ol>
   `
-  expect(toGovspeak(html)).toEqual('## Item 1\n    \n### Item 2')
+  expect(toGovspeak(html)).toEqual('## Item 1\n   \n### Item 2')
 })
 
 it('strips paragraph elements within a list item', () => {
@@ -120,7 +120,7 @@ it('strips paragraph elements within a list item', () => {
       <li><p>Item 2</p></li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
+  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('removes nested links when link markdown text is wrapped in an element', () => {
@@ -135,4 +135,52 @@ it('removes nested links when link markdown text is not wrapped in an element', 
     [nested link](<a href="https://www.gov.uk/">https://www.gov.uk/</a>)
   `
   expect(toGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
+})
+
+it('fixes an invalid nested unordered list that Google Docs produces', () => {
+  const html = `
+    <ul>
+      <li>Parent</li>
+      <ul>
+        <li>Child</li>
+        <ul>
+          <li>Grand child</li>
+        </ul>
+      </ul>
+      <li>Parent sibling</li>
+    </ul>
+  `
+  expect(toGovspeak(html)).toEqual(
+    '- Parent\n' +
+    '   - Child\n' +
+    '      - Grand child\n' +
+    '- Parent sibling'
+  )
+})
+
+it('fixes an invalid nested ordered list that Google Docs produces', () => {
+  const html = `
+    <ol>
+      <li>Parent</li>
+      <ol>
+        <li>Child 1</li>
+        <ol>
+          <li>Grand child 1</li>
+          <li>Grand child 2</li>
+        </ol>
+        <li>Child 2</li>
+        <li>Child 3</li>
+      </ol>
+      <li>Parent sibling</li>
+    </ol>
+  `
+  expect(toGovspeak(html)).toEqual(
+    '1. Parent\n' +
+    '   1. Child 1\n' +
+    '      1. Grand child 1\n' +
+    '      2. Grand child 2\n' +
+    '   2. Child 2\n' +
+    '   3. Child 3\n' +
+    '2. Parent sibling'
+  )
 })
