@@ -1,22 +1,22 @@
 /* eslint-env jest */
 
-import toGovspeak from '../src/to-govspeak'
+import htmlToGovspeak from '../src/html-to-govspeak'
 
 it('converts HTML to govspeak', () => {
-  expect(toGovspeak('<p>Hello</p>')).toEqual('Hello')
+  expect(htmlToGovspeak('<p>Hello</p>')).toEqual('Hello')
 })
 it("doesn't escape markdown", () => {
   const html = '<p>[Markdown](link)</p>'
-  expect(toGovspeak(html)).toEqual('[Markdown](link)')
+  expect(htmlToGovspeak(html)).toEqual('[Markdown](link)')
 })
 
 it('removes empty links', () => {
-  expect(toGovspeak('<a href="https://www.gov.uk"><a>')).toEqual('')
+  expect(htmlToGovspeak('<a href="https://www.gov.uk"><a>')).toEqual('')
 })
 
 it('ignores title attributes of links', () => {
   const html = '<a href="https://www.gov.uk" title="GOV.UK">www.gov.uk<a>'
-  expect(toGovspeak(html)).toEqual('[www.gov.uk](https://www.gov.uk)')
+  expect(htmlToGovspeak(html)).toEqual('[www.gov.uk](https://www.gov.uk)')
 })
 
 it('converts lists to a dash bullet style', () => {
@@ -26,33 +26,33 @@ it('converts lists to a dash bullet style', () => {
       <li>Item 2</li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
+  expect(htmlToGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('maintains H2 and H3 headers', () => {
-  expect(toGovspeak('<h2>Hello</h2>')).toEqual('## Hello')
-  expect(toGovspeak('<h3>Hello</h3>')).toEqual('### Hello')
+  expect(htmlToGovspeak('<h2>Hello</h2>')).toEqual('## Hello')
+  expect(htmlToGovspeak('<h3>Hello</h3>')).toEqual('### Hello')
 })
 
 it('strips other headers', () => {
-  expect(toGovspeak('<h1>Hello</h1>')).toEqual('Hello')
-  expect(toGovspeak('<h4>Hello</h4>')).toEqual('Hello')
-  expect(toGovspeak('<h5>Hello</h5>')).toEqual('Hello')
-  expect(toGovspeak('<h6>Hello</h6>')).toEqual('Hello')
+  expect(htmlToGovspeak('<h1>Hello</h1>')).toEqual('Hello')
+  expect(htmlToGovspeak('<h4>Hello</h4>')).toEqual('Hello')
+  expect(htmlToGovspeak('<h5>Hello</h5>')).toEqual('Hello')
+  expect(htmlToGovspeak('<h6>Hello</h6>')).toEqual('Hello')
 })
 
 it('strips b and strong elements', () => {
-  expect(toGovspeak('<p>With <b>bold</b> text</p>')).toEqual('With bold text')
-  expect(toGovspeak('<p>With <strong>strong</strong> text</p>')).toEqual('With strong text')
+  expect(htmlToGovspeak('<p>With <b>bold</b> text</p>')).toEqual('With bold text')
+  expect(htmlToGovspeak('<p>With <strong>strong</strong> text</p>')).toEqual('With strong text')
 })
 
 it('strips i and em elements', () => {
-  expect(toGovspeak('<p>With <i>italic</i> text</p>')).toEqual('With italic text')
-  expect(toGovspeak('<p>With <em>emphasised</em> text</p>')).toEqual('With emphasised text')
+  expect(htmlToGovspeak('<p>With <i>italic</i> text</p>')).toEqual('With italic text')
+  expect(htmlToGovspeak('<p>With <em>emphasised</em> text</p>')).toEqual('With emphasised text')
 })
 
 it('removes image elements', () => {
-  expect(toGovspeak('<img src="image.jpg" alt="" />')).toEqual('')
+  expect(htmlToGovspeak('<img src="image.jpg" alt="" />')).toEqual('')
 })
 
 it('converts abbr elements to references', () => {
@@ -65,7 +65,7 @@ it('converts abbr elements to references', () => {
     <p>
   `
 
-  expect(toGovspeak(html)).toEqual(
+  expect(htmlToGovspeak(html)).toEqual(
     'Documents on the web are wrote using HTML and styled with CSS. These ' +
     'are both examples of web standards.\n\n' +
     '*[HTML]: Hypertext Markup Language\n' +
@@ -81,7 +81,7 @@ it('removes empty paragraphs', () => {
     <p>  <br />  </p>
     <p>Not empty either</p>
   `
-  expect(toGovspeak(html)).toEqual(
+  expect(htmlToGovspeak(html)).toEqual(
     'Not empty\n\nNot empty either'
   )
 })
@@ -93,13 +93,13 @@ it('removes rogue br elements', () => {
     <span><br></span>
     <p>Not empty either</p>
   `
-  expect(toGovspeak(html)).toEqual(
+  expect(htmlToGovspeak(html)).toEqual(
     'Not empty\n\nNot empty either'
   )
 })
 
 it('removes style elements', () => {
-  expect(toGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
+  expect(htmlToGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
 })
 
 it('extracts headers from lists', () => {
@@ -109,7 +109,7 @@ it('extracts headers from lists', () => {
       <li><h3>Item 2</h3></li>
     </ol>
   `
-  expect(toGovspeak(html)).toEqual('## Item 1\n   \n### Item 2')
+  expect(htmlToGovspeak(html)).toEqual('## Item 1\n   \n### Item 2')
 })
 
 it('strips paragraph elements within a list item', () => {
@@ -119,21 +119,21 @@ it('strips paragraph elements within a list item', () => {
       <li><p>Item 2</p></li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
+  expect(htmlToGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('removes nested links when link markdown text is wrapped in an element', () => {
   const html = `
     <span>[nested link](</span><a href="https://www.gov.uk/">https://www.gov.uk/</a>)
   `
-  expect(toGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
+  expect(htmlToGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
 })
 
 it('removes nested links when link markdown text is not wrapped in an element', () => {
   const html = `
     [nested link](<a href="https://www.gov.uk/">https://www.gov.uk/</a>)
   `
-  expect(toGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
+  expect(htmlToGovspeak(html)).toEqual('[nested link](https://www.gov.uk/)')
 })
 
 it('fixes an invalid nested unordered list that Google Docs produces', () => {
@@ -149,7 +149,7 @@ it('fixes an invalid nested unordered list that Google Docs produces', () => {
       <li>Parent sibling</li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual(
+  expect(htmlToGovspeak(html)).toEqual(
     '- Parent\n' +
     '   - Child\n' +
     '      - Grand child\n' +
@@ -173,7 +173,7 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
       <li>Parent sibling</li>
     </ol>
   `
-  expect(toGovspeak(html)).toEqual(
+  expect(htmlToGovspeak(html)).toEqual(
     '1. Parent\n' +
     '   1. Child 1\n' +
     '      1. Grand child 1\n' +
@@ -187,7 +187,7 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
 it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
   const html = `Some text<span>&nbsp;</span>and some more text`
 
-  expect(toGovspeak(html)).toEqual('Some text and some more text')
+  expect(htmlToGovspeak(html)).toEqual('Some text and some more text')
 })
 
 // This test is here to document an undesirable case that took a lot of
@@ -196,5 +196,5 @@ it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
 it('Maintains behaviour where a <span> </span> produces a double space', () => {
   const html = `Some text<span> </span>and some more text`
 
-  expect(toGovspeak(html)).toEqual('Some text  and some more text')
+  expect(htmlToGovspeak(html)).toEqual('Some text  and some more text')
 })

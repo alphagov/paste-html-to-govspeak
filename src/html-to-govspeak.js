@@ -201,7 +201,7 @@ function postProcess (govspeak) {
   return removeBrParagraphs(govspeakWithExtractedHeadings)
 }
 
-export default function toGovspeak (html) {
+export default function htmlToGovspeak (html) {
   const govspeak = service.turndown(html)
   return postProcess(govspeak)
 }

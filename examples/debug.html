@@ -54,7 +54,7 @@
             govspeakElement.textContent = ''
           })
 
-          textarea.addEventListener('paste', window.pasteHtmlToGovspeak)
+          textarea.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
 
           textarea.addEventListener('htmlpaste', function (e) {
             if (e.detail) {

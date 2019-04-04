@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import pasteHtmlToGovspeak from '../src/main'
+import { pasteListener } from '../src/main'
 
 let mockLegacyHtmlFromPaste
 let textarea
@@ -11,7 +11,7 @@ beforeEach(() => {
   mockLegacyHtmlFromPaste = null
 
   textarea = document.createElement('textarea')
-  textarea.addEventListener('paste', pasteHtmlToGovspeak)
+  textarea.addEventListener('paste', pasteListener)
 
   document.execCommand = jest.fn()
 })
