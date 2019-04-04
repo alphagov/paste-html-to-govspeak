@@ -12,7 +12,7 @@ An npm installation will be available at a future point.
 ## Usage
 
 ```js
-element.addEventListener('paste', window.pasteHtmlToGovspeak)
+element.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
 ```
 
 ## Browser support

@@ -1,4 +1,4 @@
-import toGovspeak from './to-govspeak'
+import htmlToGovspeak from './html-to-govspeak'
 import insertTextAtCursor from 'insert-text-at-cursor'
 import legacyHtmlFromPaste from './legacy-html-from-paste'
 
@@ -35,7 +35,7 @@ function triggerPasteEvent (element, eventName, detail) {
   element.dispatchEvent(event)
 }
 
-export default function pasteHtmlToGovspeak (event) {
+function pasteListener (event) {
   const element = event.target
 
   const html = htmlFromPasteEvent(event)
@@ -45,10 +45,12 @@ export default function pasteHtmlToGovspeak (event) {
   triggerPasteEvent(element, 'textpaste', text)
 
   if (html && html.length) {
-    const govspeak = toGovspeak(html)
+    const govspeak = htmlToGovspeak(html)
     triggerPasteEvent(element, 'govspeak', govspeak)
 
     insertTextAtCursor(element, govspeak)
     event.preventDefault()
   }
 }
+
+export { pasteListener, htmlToGovspeak }

@@ -4,6 +4,19 @@
     <meta charset="utf-8">
     <title>paste-html-to-govspeak</title>
     <link href="govuk-frontend-2.7.0.min.css" rel="stylesheet">
+    <style>
+      pre {
+        min-height: 100px;
+        max-height: 500px;
+        overflow-y: scroll;
+        border: 1px solid black;
+        white-space: pre-wrap;
+      }
+
+      #paste-html-input {
+        white-space: pre;
+      }
+    </style>
   </head>
   <body class="govuk-template__body">
     <div class="govuk-width-container">
@@ -13,13 +26,100 @@
           A tool that converts pastes HTML into
           <a href="https://github.com/alphagov/govspeak" target="_blank">govspeak</a>.
           For more information check the
-          <a href="https://github.com/alphagov/paste-html-to-govspeak#readme" target="_blank">repo</a>.<br>
-          To test paste content into the field below.
+          <a href="https://github.com/alphagov/paste-html-to-govspeak#readme" target="_blank">repo</a>.
         </p>
-        <textarea class="govuk-textarea" rows=20></textarea>
+        <h2 class="govuk-heading-l">Paste Demo</h2>
+        <p class="govuk-body">
+          To test, paste rich text content into the form below.
+        </p>
+        <textarea class="govuk-textarea" rows="10" id="paste-textarea"></textarea>
+
+        <details class="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Debug information from last paste
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <h3 class="govuk-heading-m">HTML Input</h3>
+            <pre id="paste-html-input"></pre>
+
+            <h3 class="govuk-heading-m">Text Input</h3>
+            <pre id="paste-text-input"></pre>
+
+            <h3 class="govuk-heading-m">Govspeak</h3>
+            <pre id="paste-govspeak"></pre>
+          </div>
+        </details>
+
+        <hr />
+
+        <h2 class="govuk-heading-l" id="html-to-govspeak">HTML To Govspeak</h2>
+        <p class="govuk-body">
+          Enter HTML content into the form below for govspeak output
+        </p>
+        <textarea class="govuk-textarea" rows="10" id="html-textarea"></textarea>
+
+        <h2 class="govuk-heading-m">Govspeak</h2>
+        <pre id="html-govspeak"></pre>
+
         <script src="dist/paste-html-to-markdown.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.9.0/beautify-html.js"></script>
         <script>
-          document.querySelector('textarea').addEventListener('paste', window.pasteHtmlToGovspeak)
+          var pasteTextarea = document.getElementById('paste-textarea')
+          var pasteHtmlInputElement = document.getElementById('paste-html-input')
+          var pasteTextInputElement = document.getElementById('paste-text-input')
+          var pasteGovspeakElement = document.getElementById('paste-govspeak')
+          var htmlTextarea = document.getElementById('html-textarea')
+
+          pasteTextarea.addEventListener('paste', function () {
+            pasteGovspeakElement.textContent = ''
+          })
+
+          pasteTextarea.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
+
+          pasteTextarea.addEventListener('htmlpaste', function (e) {
+            if (e.detail) {
+              pasteHtmlInputElement.textContent = prettyHtml(e.detail)
+            } else {
+              pasteHtmlInputElement.textContent = 'HTML was not pasted'
+            }
+          })
+
+          pasteTextarea.addEventListener('textpaste', function (e) {
+            if (e.detail) {
+              pasteTextInputElement.textContent = e.detail
+            } else {
+              pasteTextInputElement.textContent = 'Text was not pasted'
+            }
+          })
+
+          pasteTextarea.addEventListener('govspeak', function (e) {
+            pasteGovspeakElement.textContent = e.detail
+          })
+
+          function htmlToGovspeakListener () {
+            var govspeak = window.pasteHtmlToGovspeak.htmlToGovspeak(htmlTextarea.value)
+            document.getElementById('html-govspeak').textContent = govspeak
+          }
+
+          htmlTextarea.addEventListener('input', htmlToGovspeakListener)
+
+          // convert any initial value
+          htmlToGovspeakListener()
+
+          function prettyHtml (html) {
+            try {
+              return window.html_beautify(html, {
+                indent_size: 2,
+                wrap_line_length: 160,
+                wrap_attributes: 'force-expand-multiline'
+              })
+            } catch (err) {
+              console.error(err)
+              return html
+            }
+          }
         </script>
       </main>
     </div>
