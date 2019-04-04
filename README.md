@@ -4,7 +4,8 @@ Converts HTML formatted rich content to [govspeak][] format (a markdown extensio
 
 ## Installation
 
-Add the compiled `/dist/paste-html-to-markdown.js` to your application assets.
+Download [paste-html-to-markdown.js][dist-file] and add it to your
+application assets.
 
 An npm installation will be available at a future point.
 
@@ -40,3 +41,4 @@ npm run watch
 Distributed under the MIT license. See LICENSE for details.
 
 [govspeak]: https://github.com/alphagov/govspeak
+[dist-file]: https://alphagov.github.io/paste-html-to-govspeak/dist/paste-html-to-markdown.js
