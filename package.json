@@ -4,14 +4,12 @@
   "description": "Converts HTML formatted rich content to govspeak format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.",
   "main": "dist/paste-html-to-markdown.js",
   "scripts": {
-    "prebuild": "rm -rf dist/*",
+    "prebuild": "rm -rf dist examples/dist && mkdir dist examples/dist",
     "build": "rollup -c",
     "pretest": "npm run lint",
     "test": "jest",
     "lint": "standard",
-    "watch": "npm-watch",
-    "precheck-dist-built": "npm run build",
-    "check-dist-built": "git diff --quiet dist || (echo 'dist files are not in sync with src, run: npm run build' && exit 1)"
+    "watch": "npm-watch"
   },
   "standard": {
     "ignore": [
