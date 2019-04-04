@@ -27,7 +27,7 @@ it('converts lists to a dash bullet style', () => {
       <li>Item 2</li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
+  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('maintains H2 and H3 headers', () => {
@@ -110,7 +110,7 @@ it('extracts headers from lists', () => {
       <li><h3>Item 2</h3></li>
     </ol>
   `
-  expect(toGovspeak(html)).toEqual('## Item 1\n    \n### Item 2')
+  expect(toGovspeak(html)).toEqual('## Item 1\n   \n### Item 2')
 })
 
 it('strips paragraph elements within a list item', () => {
@@ -120,7 +120,7 @@ it('strips paragraph elements within a list item', () => {
       <li><p>Item 2</p></li>
     </ul>
   `
-  expect(toGovspeak(html)).toEqual('-   Item 1\n-   Item 2')
+  expect(toGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
 it('removes nested links when link markdown text is wrapped in an element', () => {
@@ -151,10 +151,10 @@ it('fixes an invalid nested unordered list that Google Docs produces', () => {
     </ul>
   `
   expect(toGovspeak(html)).toEqual(
-    '-   Parent\n' +
-    '    -   Child\n' +
-    '        -   Grand child\n' +
-    '-   Parent sibling'
+    '- Parent\n' +
+    '   - Child\n' +
+    '      - Grand child\n' +
+    '- Parent sibling'
   )
 })
 
@@ -175,12 +175,12 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
     </ol>
   `
   expect(toGovspeak(html)).toEqual(
-    '1.  Parent\n' +
-    '    1.  Child 1\n' +
-    '        1.  Grand child 1\n' +
-    '        2.  Grand child 2\n' +
-    '    2.  Child 2\n' +
-    '    3.  Child 3\n' +
-    '2.  Parent sibling'
+    '1. Parent\n' +
+    '   1. Child 1\n' +
+    '      1. Grand child 1\n' +
+    '      2. Grand child 2\n' +
+    '   2. Child 2\n' +
+    '   3. Child 3\n' +
+    '2. Parent sibling'
   )
 })

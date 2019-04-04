@@ -1,7 +1,8 @@
 import TurndownService from 'turndown'
 
 const service = new TurndownService({
-  bulletListMarker: '-'
+  bulletListMarker: '-',
+  listIndent: '   ' // 3 spaces
 })
 
 // As a user may have pasted markdown we rather crudley
@@ -125,37 +126,38 @@ service.addRule('invalidNestedLists', {
       return previousNodeName === 'li'
     }
   },
-  replacement: (content, node) => {
+  replacement: (content, node, options) => {
     content = content
       .replace(/^\n+/, '') // remove leading newlines
       .replace(/\n+$/, '') // replace trailing newlines
-      .replace(/\n/gm, '\n    ') // indent
+      .replace(/\n/gm, `\n${options.listIndent}`) // indent all nested content in the list
 
-    return '    ' + content + '\n'
+    // indent this list to match sibling
+    return options.listIndent + content + '\n'
   }
 })
 
 // This is ported from https://github.com/domchristie/turndown/blob/80297cebeae4b35c8d299b1741b383c74eddc7c1/src/commonmark-rules.js#L61-L80
-// It is modified to handle items from the invalidNestedLists as if these
-// are ordered lists they will be output with incorrect numbering. It also
-// removed handling of start attribute of <ol> elements as this has no effect
-// on govspeak.
+// It is modified in the following ways:
+// - Only determines ol ordering based on li elements
+// - Removes handling of ol start attribute as this doesn't affect govspeak output
+// - Makes spacing consistent with gov.uk markdown guidance
 service.addRule('listItems', {
   filter: 'li',
   replacement: function (content, node, options) {
     content = content
       .replace(/^\n+/, '') // remove leading newlines
       .replace(/\n+$/, '\n') // replace trailing newlines with just a single one
-      .replace(/\n/gm, '\n    ') // indent
+      .replace(/\n/gm, `\n${options.listIndent}`) // indent all nested content in the list
 
-    let prefix = options.bulletListMarker + '   '
+    let prefix = options.bulletListMarker + ' '
     const parent = node.parentNode
     if (parent.nodeName.toLowerCase() === 'ol') {
       const listItems = Array.prototype.filter.call(
         parent.children, (element) => element.nodeName.toLowerCase() === 'li'
       )
       const index = Array.prototype.indexOf.call(listItems, node)
-      prefix = (index + 1).toString() + '.  '
+      prefix = (index + 1).toString() + '. '
     }
     return (
       prefix + content + (node.nextSibling && !/\n$/.test(content) ? '\n' : '')
@@ -178,7 +180,7 @@ function removeBrParagraphs (govspeak) {
 function extractHeadingsFromLists (govspeak) {
   // This finds instances of headings within ordered lists and replaces them
   // with the headings only. This only applies to H2 and H3.
-  const headingsInListsRegExp = new RegExp(/\d\.\s{2}(#{2,3})/, 'g')
+  const headingsInListsRegExp = new RegExp(/\d\.\s(#{2,3})/, 'g')
   return govspeak.replace(headingsInListsRegExp, '$1')
 }
 
