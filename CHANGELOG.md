@@ -8,6 +8,6 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
-## 0.1.0
+## 0.1.1
 
 - Initial release
