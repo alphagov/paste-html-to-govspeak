@@ -24,7 +24,7 @@ deploy:
     script: git tag $LOCAL_VERSION && git push $GIT_REMOTE --tags
     on:
       branch: master
-      condition: -z "$GIT_TAG"
+      condition: -n "$GIT_TAG"
   - provider: npm
     skip_cleanup: true
     email: govuk-dev@digital.cabinet-office.gov.uk
