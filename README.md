@@ -1,6 +1,13 @@
 # Paste HTML to govspeak
 
-Converts HTML formatted rich content to [govspeak][] format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.
+This package provides an event listener that will convert pasted HTML content
+on form inputs and textareas into [Govspeak][] (a markdown extension library
+for government publishers).
+
+The HTML data available to the browser clipboard is complicated and
+inconsistent, learn more about this
+[functionality and its limitations](docs/functionality-overview.md).
+
 
 ## Installation
 
