@@ -4,12 +4,33 @@ Converts HTML formatted rich content to [govspeak][] format (a markdown extensio
 
 ## Installation
 
+### Via NPM (recommended)
+
+Add this project to your package.json file via NPM or Yarn:
+
+```sh
+# NPM
+npm install paste-html-to-govspeak --save
+# Yarn
+yarn add paste-html-to-govspeak
+```
+
+### Manual installation
+
 Download [paste-html-to-markdown.js][dist-file] and add it to your
 application assets.
 
-An npm installation will be available at a future point.
-
 ## Usage
+
+### Using a bundler (e.g. Webpack)
+
+```js
+import { pasteListener } from 'paste-html-to-govspeak'
+
+element.addEventListener('paste', pasteListener)
+```
+
+### Without a bundler
 
 ```js
 element.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
