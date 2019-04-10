@@ -44,6 +44,26 @@ element.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
 - Internet Explorer 11
 - Microsoft Edge
 
+## Debugging
+
+This package triggers events at different stages in the conversion process
+which can be monitored to understand how a particular scenario is occurring.
+These events are triggered on the element the `pasteListener` has been applied
+to.
+
+These are:
+
+- `htmlpaste` - which is the received HTML from the paste event
+- `textpaste` - which is the received text from the paste event
+- `govspeak` - which is the resultant govspeak of the HTML conversion, this
+  will only be triggered if HTML was present in the paste event.
+
+There is also a `htmlToGovspeak` method that is exposed by the package. Given
+a HTML string input this will return Govspeak.
+
+This repo contains [example usages](examples/index.html) of these debugging
+tools.
+
 ## Development
 
 ```
