@@ -5,6 +5,7 @@ import htmlToGovspeak from '../src/html-to-govspeak'
 it('converts HTML to govspeak', () => {
   expect(htmlToGovspeak('<p>Hello</p>')).toEqual('Hello')
 })
+
 it("doesn't escape markdown", () => {
   const html = '<p>[Markdown](link)</p>'
   expect(htmlToGovspeak(html)).toEqual('[Markdown](link)')
@@ -55,6 +56,65 @@ it('removes image elements', () => {
   expect(htmlToGovspeak('<img src="image.jpg" alt="" />')).toEqual('')
 })
 
+it('removes title elements', () => {
+  expect(htmlToGovspeak(`<title>Title</title>`)).toEqual('')
+})
+
+it('removes script elements', () => {
+  expect(htmlToGovspeak(`<script>alert('hi')</script>`)).toEqual('')
+})
+
+it('removes noscript elements', () => {
+  expect(htmlToGovspeak(`<noscript>Enable JS</noscript>`)).toEqual('')
+})
+
+it('removes style elements', () => {
+  expect(htmlToGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
+})
+
+it('removes video elements', () => {
+  const html = `
+    <video width="320" height="240" controls>
+      <source src="movie.mp4" type="video/mp4">
+      <source src="movie.ogg" type="video/ogg">
+      Fallback text
+    </video>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual('')
+})
+
+it('removes audio elements', () => {
+  const html = `
+    <audio controls src="/media/examples/t-rex-roar.mp3">
+      Fallback text
+    </audio>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual('')
+})
+
+it('removes object elements', () => {
+  const html = `
+    <object type="application/pdf"
+      data="/media/examples/In-CC0.pdf"
+      width="250"
+      height="200">
+      Fallback text
+    </object>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual('')
+})
+
+it('removes iframe elements', () => {
+  const html = `
+    <iframe src="./file">Fallback text</iframe>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual('')
+})
+
 it('converts abbr elements to references', () => {
   const html = `
     <p>
@@ -96,10 +156,6 @@ it('removes rogue br elements', () => {
   expect(htmlToGovspeak(html)).toEqual(
     'Not empty\n\nNot empty either'
   )
-})
-
-it('removes style elements', () => {
-  expect(htmlToGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
 })
 
 it('extracts headers from lists', () => {

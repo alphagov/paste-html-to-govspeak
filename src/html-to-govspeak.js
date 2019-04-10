@@ -17,6 +17,22 @@ const service = new TurndownService({
   }
 })
 
+// define all the elements we want stripped from output
+const elementsToRemove = [
+  'title',
+  'script',
+  'noscript',
+  'style',
+  'video',
+  'audio',
+  'object',
+  'iframe'
+]
+
+for (const element of elementsToRemove) {
+  service.remove(element)
+}
+
 // As a user may have pasted markdown we rather crudley
 // stop all escaping
 service.escape = (string) => string
@@ -76,6 +92,14 @@ service.addRule('heading', {
   }
 })
 
+// remove images
+// this needs to be set as a rule rather than remove as it's part of turndown
+// commonmark rules that needs overriding
+service.addRule('img', {
+  filter: ['img'],
+  replacement: () => ''
+})
+
 // remove bold
 service.addRule('bold', {
   filter: ['b', 'strong'],
@@ -88,22 +112,10 @@ service.addRule('italic', {
   replacement: (content) => content
 })
 
-// remove images
-service.addRule('img', {
-  filter: ['img'],
-  replacement: () => ''
-})
-
 service.addRule('removeEmptyParagraphs', {
   filter: (node) => {
     return node.nodeName.toLowerCase() === 'p' && node.textContent.trim() === ''
   },
-  replacement: () => ''
-})
-
-// remove style elements
-service.addRule('style', {
-  filter: ['style'],
   replacement: () => ''
 })
 
