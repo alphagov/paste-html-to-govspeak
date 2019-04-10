@@ -209,8 +209,10 @@ function extractHeadingsFromLists (govspeak) {
 }
 
 function postProcess (govspeak) {
-  let govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeak)
-  return removeBrParagraphs(govspeakWithExtractedHeadings)
+  const govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeak)
+  const brsRemoved = removeBrParagraphs(govspeakWithExtractedHeadings)
+  const whitespaceStripped = brsRemoved.trim()
+  return whitespaceStripped
 }
 
 export default function htmlToGovspeak (html) {

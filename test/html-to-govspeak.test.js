@@ -254,3 +254,15 @@ it('Maintains behaviour where a <span> </span> produces a double space', () => {
 
   expect(htmlToGovspeak(html)).toEqual('Some text  and some more text')
 })
+
+// The presence of elements preceeding text that is rendered can cause
+// preceeding whitespace. Typically this is caused by elements in the <head>
+// that are to be stripped out.
+it('strips whitespace caused by surrounding, non-visual elements', () => {
+  const html = `
+    <meta charset="utf-8">
+    <title>Title</title>
+    <p>Some text</p>
+  `
+  expect(htmlToGovspeak(html)).toEqual('Some text')
+})
