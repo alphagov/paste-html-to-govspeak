@@ -11,6 +11,7 @@
 ## Unreleased
 
 - Fix dist file containing ES2015 and regex breaking in IE11 (PR #39)
+- Remove more undesirable elements and trim output whitespace (PR #38)
 
 ## 0.1.1
 
