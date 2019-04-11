@@ -1,18 +1,20 @@
 # Functionality overview
 
-The paste HTML to govspeak functionality interfaces with data on a users
+The paste HTML to govspeak functionality interfaces with data on a user's
 clipboard to attempt to create govspeak formatted text at the point of them
-pasting. The expectation for usage is that users may be copying data from a
-document created on a word processor (such as Microsoft Word or Google Docs),
-fixed layout documents (such as PDF) or pasting content from webpages.
+pasting HTML. The expectation for usage is that users copy data from
+word processor documents (such as Microsoft Word or Google Docs),
+fixed layout documents (such as PDF) or webpage content and paste it into the
+tool.
 
-The quality and accuracy of clipboard data can vary significantly which means
-that the outcome can sometimes be surprising. The goal of the tool is
+The quality and accuracy of clipboard data can vary significantly depending on
+the type of document it is copied from and what program is used to open it.
+This means that outcomes can sometimes be surprising. The goal of the tool is
 therefore somewhat modest: to consistently provide a paste experience that is
 at least as good as pasting plain text and to enhance wherever possible.
 
-This document serves to explain more about how this tool works (or
-doesn't) and at look some of the issues discovered in testing scenarios.
+This document serves to explain more about how this tool works, it's limitations
+and issues discovered in testing scenarios.
 
 ## How this tool works
 
@@ -38,11 +40,12 @@ information, are removed; and any other elements are converted to their text
 representation. This conversion is done by using the [turndown] package.
 
 In order to produce a good Govspeak conversion the HTML must be marked up
-[semantically][semantic-html]. This allows the original authors content intent
-to be understood by different application regardless of the formatting. In
+[semantically][semantic-html]. This allows the original author's content intent
+to be understood by different applications regardless of the formatting. In
 order for this to occur the author must have specified these semantics when
-producing their document and the application used to read the document must
-include this information in copy data to the clipboard.
+producing their document (for example a user selecting text as a heading) and
+the application used to read the document must include this information in
+copy data to the clipboard.
 
 ## Falling back to text input
 
@@ -85,8 +88,8 @@ to see the conversion.
 
 ## Overview of testing outcomes
 
-In preparing to deploy this functionality we tested a wide range of scenarios,
-what follows is a summary of the findings for expected input sources.
+In preparing to deploy this functionality we tested a wide range of scenarios.
+What follows is a summary of the findings for expected input sources.
 
 ### Common issues
 
@@ -96,9 +99,9 @@ happens when the source document stores the separate lines as separate
 paragraphs.
 
 It is expected that users may copy and paste Govspeak/markdown from example
-sources that are represented in HTML (eg [How to publish on GOV.UK][]). Because
+sources that are represented in HTML (for example [How to publish on GOV.UK][]). Because
 of this no markdown is escaped when it is within HTML. This can impact users
-who wish to use characters that have a syntactic in Govspeak.
+who wish to use characters that have a syntactic meaning in Govspeak.
 
 If a document author uses text formatting to create semantic meaning (such as
 headers or lists) this information won't be retained when converting
@@ -154,7 +157,7 @@ either HTML or text pasting.
 ### PDF documents
 
 PDF documents mostly copy as only plain text or have minimal
-HTML available, thus these have the little to no Govspeak available when
+HTML available, thus these have little to no Govspeak available when
 pasted. In some circumstances we found PDF to provide a particularly poor
 experience by stripping all line breaks or including superfluous characters.
 
@@ -162,7 +165,7 @@ Different PDF readers all seemed to produce different HTML results, with the
 common theme being a lack of semantic information.
 
 In some cases the HTML paste of a PDF was worse than that of plain text, which
-falls short of our goal for this tool, this may need future iteration.
+falls short of our goal for this tool. This may need future iteration.
 
 ### Copying from websites and email clients
 
