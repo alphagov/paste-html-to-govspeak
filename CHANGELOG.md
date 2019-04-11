@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## Unreleased
+
+- Fix dist file containing ES2015 and regex breaking in IE11 (PR #39)
+
 ## 0.1.1
 
 - Initial release
