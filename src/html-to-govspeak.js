@@ -192,6 +192,24 @@ service.addRule('listItems', {
   }
 })
 
+service.addRule('removeWordCommentElements', {
+  filter: (node) => {
+    const nodeName = node.nodeName.toLowerCase()
+    const classList = node.classList
+
+    if (nodeName === 'hr' && classList.contains('msocomoff')) {
+      return true
+    }
+    if (nodeName === 'span' && classList.contains('MsoCommentReference')) {
+      return true
+    }
+    if (nodeName === 'div' && classList.contains('msocomtxt')) {
+      return true
+    }
+  },
+  replacement: () => ''
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.

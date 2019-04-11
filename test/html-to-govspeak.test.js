@@ -1,6 +1,12 @@
 /* eslint-env jest */
 
 import htmlToGovspeak from '../src/html-to-govspeak'
+import fs from 'fs'
+
+function openFixture (fixturePath) {
+  const filePath = `${__dirname}/__fixtures__/${fixturePath}`
+  return fs.readFileSync(filePath, 'utf8')
+}
 
 it('converts HTML to govspeak', () => {
   expect(htmlToGovspeak('<p>Hello</p>')).toEqual('Hello')
@@ -271,4 +277,13 @@ it('strips whitespace caused by surrounding, non-visual elements', () => {
     <p>Some text</p>
   `
   expect(htmlToGovspeak(html)).toEqual('Some text')
+})
+
+it('removes Microsoft Word comments', () => {
+  const html = openFixture('word-2016-comments.html')
+
+  // This fixture unfortunately generates an undesirable space
+  // hopefully this will be resolved when/if https://github.com/domchristie/turndown/pull/281
+  // is released.
+  expect(htmlToGovspeak(html)).toEqual('A document with  a comment')
 })
