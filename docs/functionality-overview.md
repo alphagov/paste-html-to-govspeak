@@ -89,9 +89,17 @@ to see the conversion.
 ## Overview of testing outcomes
 
 In preparing to deploy this functionality we tested a wide range of scenarios.
-What follows is a summary of the findings for expected input sources.
+The approach to testing was to create a matrix identifying different
+authoring tools (such as Microsoft Word, Google Docs) and different output formats
+(such as docx, odt, pdf) which could be opened on different platforms. We then
+looked at other common sources of content such as web pages or e-mail clients.
 
 ### Common issues
+
+We found that saving from tools such as Word or Google Docs to cross platform
+formats such as ODT or RTF didn't have a significant impact on the formatting
+of the document. However this did produce some buggy circumstances such as
+[headers embedded in ordered lists][headers-in-ordered-lists].
 
 If a document has content separated with line breaks, these may often be
 converted into separate paragraphs which creates an additional line break. This
@@ -99,9 +107,9 @@ happens when the source document stores the separate lines as separate
 paragraphs.
 
 It is expected that users may copy and paste Govspeak/markdown from example
-sources that are represented in HTML (for example [How to publish on GOV.UK][]). Because
-of this no markdown is escaped when it is within HTML. This can impact users
-who wish to use characters that have a syntactic meaning in Govspeak.
+sources that are represented in HTML (for example [How to publish on GOV.UK][]).
+Because of this no markdown is escaped when it is within HTML. This can impact
+users who wish to use characters that have a syntactic meaning in Govspeak.
 
 If a document author uses text formatting to create semantic meaning (such as
 headers or lists) this information won't be retained when converting
@@ -131,8 +139,9 @@ document is opened: editing and previewing.
 Copying from the edit interface provided a good copy and pasting experience,
 with semantic markup copied and converted.
 
-The only issue we discovered was that nested lists appear with invalid HTML,
-we have [a workaround][gdocs-list-workaround] for this.
+We discovered, and resolved, a couple of issues relating to lists. The first
+being that [list items contained paragraph markup][li-paragraph]. The
+second that [nested lists appear with invalid HTML][gdocs-list-workaround].
 
 ### Previewing a document
 
@@ -182,6 +191,8 @@ single list item.
 [semantic-html]: https://www.lifewire.com/why-use-semantic-html-3468271
 [input example file]: https://alphagov.github.io/paste-html-to-govspeak/input.html
 [tool example]: https://alphagov.github.io/paste-html-to-govspeak/
+[headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25/commits/79320643bd8999e9ea646ea1342962fe184cdc95
 [How to publish on GOV.UK]: https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown
 [office-extension]: https://chrome.google.com/webstore/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj
+[li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23/commits/4f0708be72dc72a81cd6d459d1d71dc69fc68d9a
 [gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26/commits/b61c64653b2c57cfd529285fdcd267b64cbcad81
