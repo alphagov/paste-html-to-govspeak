@@ -1,6 +1,13 @@
 # Paste HTML to govspeak
 
-Converts HTML formatted rich content to [govspeak][] format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.
+This package provides an event listener that will convert pasted HTML content
+on form inputs and textareas into [Govspeak][] (a markdown extension library
+for government publishers).
+
+The HTML data available to the browser clipboard is complicated and
+inconsistent, learn more about this
+[functionality and its limitations](docs/functionality-overview.md).
+
 
 ## Installation
 
@@ -43,6 +50,26 @@ element.addEventListener('paste', window.pasteHtmlToGovspeak.pasteListener)
 - Safari
 - Internet Explorer 11
 - Microsoft Edge
+
+## Debugging
+
+This package triggers events at different stages in the conversion process
+which can be monitored to understand how a particular scenario is occurring.
+These events are triggered on the element the `pasteListener` has been applied
+to.
+
+These are:
+
+- `htmlpaste` - which is the received HTML from the paste event
+- `textpaste` - which is the received text from the paste event
+- `govspeak` - which is the resultant govspeak of the HTML conversion, this
+  will only be triggered if HTML was present in the paste event.
+
+There is also a `htmlToGovspeak` method that is exposed by the package. Given
+a HTML string input this will return Govspeak.
+
+This repo contains [example usages](examples/index.html) of these debugging
+tools.
 
 ## Development
 

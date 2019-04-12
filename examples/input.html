@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" class="govuk-template">
+  <head>
+    <meta charset="utf-8">
+    <title>Example input data</title>
+    <link href="govuk-frontend-2.7.0.min.css" rel="stylesheet">
+  </head>
+    <body class="govuk-template__body">
+      <div class="govuk-width-container">
+        <main class="govuk-main-wrapper">
+          <h1 class="govuk-heading-xl">Input examples</h1>
+          <p class="govuk-body">
+            This document serves as an example of HTML elements that should
+            be converted to Govspeak when the copy of this document is copied
+            into the <a href="./" target="_blank">example</a>. It is intended
+            to demonstrate a best case of the pasting experience.
+          </p>
+
+          <h1 class="govuk-heading-xl">This is a h1 - it should not be converted to a header</h1>
+          <h2 class="govuk-heading-l">This is a h2 - it should be converted</h2>
+          <h3 class="govuk-heading-m">This is a h3 - it should also be converted</h3>
+          <h4 class="govuk-heading-s">This is a h4 - it should not be converted</h4>
+          <h5 class="govuk-heading-s">This is a h5 - it should not be converted</h5>
+          <h6 class="govuk-heading-s">This is a h5 - it should not be converted</h6>
+
+          <p class="govuk-body">
+            This is a paragraph element. It contains a
+            <a href="https://www.gov.uk" class="govuk-link">link</a>
+            and an <abbr title="abbreviation">abbr</abbr> which should be maintained.
+          </p>
+
+          <p class="govuk-body">
+            This is a paragraph with <b>bold</b> and <i>italic text</i>,
+            this formatting should be stripped.
+          </p>
+
+          <blockquote class="govuk-body">
+            This is a blockquote it should be converted.
+          </blockquote>
+
+          <p class="govuk-body">Unordered lists are supported:</p>
+
+          <ul class="govuk-list govuk-list--bullet">
+            <li>an item</li>
+            <li>another item</li>
+          </ul>
+
+          <p class="govuk-body">As are ordered lists:</p>
+
+          <ol class="govuk-list govuk-list--number">
+            <li>Item 1.</li>
+            <li>Item 2.</li>
+          </ol>
+
+          <p class="govuk-body">And nested lists:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>
+              an item with sub items:
+              <ul class="govuk-list govuk-list--bullet">
+                <li>item 1</li>
+                <li>item 2</li>
+              </ul>
+            </li>
+            <li>another item</li>
+          </ul>
+
+          <pre>
+            preformatted elements are also supported
+          </pre>
+        </main>
+      </div>
+  </body>
+</html>
