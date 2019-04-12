@@ -282,10 +282,7 @@ it('strips whitespace caused by surrounding, non-visual elements', () => {
 it('removes Microsoft Word comments', () => {
   const html = openFixture('word-2016-comments.html')
 
-  // This fixture unfortunately generates an undesirable space
-  // hopefully this will be resolved when/if https://github.com/domchristie/turndown/pull/281
-  // is released.
-  expect(htmlToGovspeak(html)).toEqual('A document with  a comment')
+  expect(htmlToGovspeak(html)).toEqual('A document with a comment')
 })
 
 it('Converts a MS Word unordered list to a markdown list', () => {
