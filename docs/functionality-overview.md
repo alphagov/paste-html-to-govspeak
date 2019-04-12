@@ -67,7 +67,11 @@ Only a subset of HTML is converted to Govspeak.
 
 Elements that are converted, but with attributes stripped are:
 
-p, h2, h3, blockquote, pre, code, ol, ul, li, br
+p, h1, h2, h3, h4, h5, blockquote, pre, code, ol, ul, li, br
+
+Note: As GOV.UK only encourages the use of headers of level 2 and 3, h1 elements
+are converted to level 2 headers whereas h4 and h5 elements are converted
+to level 3 headers.
 
 Elements that are stripped with allowed attributes are:
 
@@ -76,7 +80,7 @@ a with href, attr with title
 Elements that are purposefully stripped for Govspeak consistency, but typically
 allowed in markdown are:
 
-h1, h4, h5, h6, b, strong, em, i, img
+h6, b, strong, em, i, img
 
 Most other elements (most notably tables) are converted to just show text
 within them, except for ones that contain non-content data (such as style,
@@ -122,8 +126,14 @@ will still strip the semantic meaning even if it is present in the document.
 Testing the authoring and copying of content produced mostly positive results
 with Word 2016. Headers, paragraphs and most links copied successfully.
 
-Lists unfortunately were problematic. Word copies these as a sequence of
-paragraphs with bullet characters preserved.
+Lists are problematic. Word copies these as a sequence of
+paragraphs with bullet characters preserved, we have a
+[workaround][word-list-workaround] that parses these.
+
+We found that when a document has comments these are included in the content
+that is copied. This behaviour is different than other word processors such
+as Google Docs and Libre Office. We have
+[code to remove the comments][word-comment-removal].
 
 Another identified issue was that automatic links to email addresses weren't
 copying as valid links as they missed a `href` attribute, for example
@@ -191,8 +201,10 @@ single list item.
 [semantic-html]: https://www.lifewire.com/why-use-semantic-html-3468271
 [input example file]: https://alphagov.github.io/paste-html-to-govspeak/input.html
 [tool example]: https://alphagov.github.io/paste-html-to-govspeak/
-[headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25/commits/79320643bd8999e9ea646ea1342962fe184cdc95
+[headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25
 [How to publish on GOV.UK]: https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown
+[word-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/42
+[word-comment-removal]: https://github.com/alphagov/paste-html-to-govspeak/pull/40
+[li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23
+[gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26
 [office-extension]: https://chrome.google.com/webstore/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj
-[li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23/commits/4f0708be72dc72a81cd6d459d1d71dc69fc68d9a
-[gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26/commits/b61c64653b2c57cfd529285fdcd267b64cbcad81
