@@ -67,7 +67,11 @@ Only a subset of HTML is converted to Govspeak.
 
 Elements that are converted, but with attributes stripped are:
 
-p, h2, h3, blockquote, pre, code, ol, ul, li, br
+p, h1, h2, h3, h4, h5, blockquote, pre, code, ol, ul, li, br
+
+Note: As GOV.UK only encourages the use of headers of level 2 and 3, h1 elements
+are converted to level 2 headers whereas h4 and h5 elements are converted
+to level 3 headers.
 
 Elements that are stripped with allowed attributes are:
 
@@ -76,7 +80,7 @@ a with href, attr with title
 Elements that are purposefully stripped for Govspeak consistency, but typically
 allowed in markdown are:
 
-h1, h4, h5, h6, b, strong, em, i, img
+h6, b, strong, em, i, img
 
 Most other elements (most notably tables) are converted to just show text
 within them, except for ones that contain non-content data (such as style,
