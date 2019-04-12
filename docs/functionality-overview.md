@@ -126,8 +126,14 @@ will still strip the semantic meaning even if it is present in the document.
 Testing the authoring and copying of content produced mostly positive results
 with Word 2016. Headers, paragraphs and most links copied successfully.
 
-Lists unfortunately were problematic. Word copies these as a sequence of
-paragraphs with bullet characters preserved.
+Lists are problematic. Word copies these as a sequence of
+paragraphs with bullet characters preserved, we have a
+[workaround][word-list-workaround] that parses these.
+
+We found that when a document has comments these are included in the content
+that is copied. This behaviour is different than other word processors such
+as Google Docs and Libre Office. We have
+[code to remove the comments][word-comment-removal].
 
 Another identified issue was that automatic links to email addresses weren't
 copying as valid links as they missed a `href` attribute, for example
@@ -197,6 +203,8 @@ single list item.
 [tool example]: https://alphagov.github.io/paste-html-to-govspeak/
 [headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25/commits/79320643bd8999e9ea646ea1342962fe184cdc95
 [How to publish on GOV.UK]: https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown
-[office-extension]: https://chrome.google.com/webstore/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj
+[word-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/42
+[word-comment-removal]: https://github.com/alphagov/paste-html-to-govspeak/pull/40
 [li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23/commits/4f0708be72dc72a81cd6d459d1d71dc69fc68d9a
 [gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26/commits/b61c64653b2c57cfd529285fdcd267b64cbcad81
+[office-extension]: https://chrome.google.com/webstore/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj
