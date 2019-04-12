@@ -321,3 +321,26 @@ it('Converts a MS Word nested list to a markdown list', () => {
     '   1. Parent 2 Child 1'
   )
 })
+
+it('Converts a MS Word list that uses msoNormal classes', () => {
+  // simplified version of the HTML word creates
+  const html = `
+    <p class="MsoNormal" style="mso-list:l0 level1 1fo1">
+      <span>
+        <span style="mso-list:Ignore">·</span>
+        <span>Item 1</span>
+      </span>
+    </p>
+    <p class="MsoNormal" style="mso-list:l0 level1 1fo1">
+      <span>
+        <span style="mso-list:Ignore">·</span>
+        <span>Item 2</span>
+      </span>
+    </p>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual(
+    '- Item 1\n' +
+    '- Item 2'
+  )
+})
