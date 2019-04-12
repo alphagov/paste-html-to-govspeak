@@ -34,10 +34,16 @@ it('maintains H2 and H3 headers', () => {
   expect(htmlToGovspeak('<h3>Hello</h3>')).toEqual('### Hello')
 })
 
-it('strips other headers', () => {
-  expect(htmlToGovspeak('<h1>Hello</h1>')).toEqual('Hello')
-  expect(htmlToGovspeak('<h4>Hello</h4>')).toEqual('Hello')
-  expect(htmlToGovspeak('<h5>Hello</h5>')).toEqual('Hello')
+it('converts h1 headers to h2', () => {
+  expect(htmlToGovspeak('<h1>Hello</h1>')).toEqual('## Hello')
+})
+
+it('converts h4 and h5 headers to h3', () => {
+  expect(htmlToGovspeak('<h4>Hello</h4>')).toEqual('### Hello')
+  expect(htmlToGovspeak('<h5>Hello</h5>')).toEqual('### Hello')
+})
+
+it('strips h6 headers', () => {
   expect(htmlToGovspeak('<h6>Hello</h6>')).toEqual('Hello')
 })
 
