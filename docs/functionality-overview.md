@@ -201,10 +201,10 @@ single list item.
 [semantic-html]: https://www.lifewire.com/why-use-semantic-html-3468271
 [input example file]: https://alphagov.github.io/paste-html-to-govspeak/input.html
 [tool example]: https://alphagov.github.io/paste-html-to-govspeak/
-[headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25/commits/79320643bd8999e9ea646ea1342962fe184cdc95
+[headers-in-ordered-lists]: https://github.com/alphagov/paste-html-to-govspeak/pull/25
 [How to publish on GOV.UK]: https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown
 [word-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/42
 [word-comment-removal]: https://github.com/alphagov/paste-html-to-govspeak/pull/40
-[li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23/commits/4f0708be72dc72a81cd6d459d1d71dc69fc68d9a
-[gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26/commits/b61c64653b2c57cfd529285fdcd267b64cbcad81
+[li-paragraph]: https://github.com/alphagov/paste-html-to-govspeak/pull/23
+[gdocs-list-workaround]: https://github.com/alphagov/paste-html-to-govspeak/pull/26
 [office-extension]: https://chrome.google.com/webstore/detail/office-editing-for-docs-s/gbkeegbaiigmenfmjfclcdgdpimamgkj
