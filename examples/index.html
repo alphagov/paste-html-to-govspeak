@@ -13,7 +13,7 @@
         white-space: pre-wrap;
       }
 
-      #paste-html-input {
+      #paste-formatted-html-input {
         white-space: pre;
       }
     </style>
@@ -41,8 +41,11 @@
             </span>
           </summary>
           <div class="govuk-details__text">
-            <h3 class="govuk-heading-m">HTML Input</h3>
-            <pre id="paste-html-input"></pre>
+            <h3 class="govuk-heading-m">Raw HTML Input</h3>
+            <pre id="paste-raw-html-input"></pre>
+
+            <h3 class="govuk-heading-m">Formatted HTML Input</h3>
+            <pre id="paste-formatted-html-input"></pre>
 
             <h3 class="govuk-heading-m">Text Input</h3>
             <pre id="paste-text-input"></pre>
@@ -67,7 +70,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.9.0/beautify-html.js"></script>
         <script>
           var pasteTextarea = document.getElementById('paste-textarea')
-          var pasteHtmlInputElement = document.getElementById('paste-html-input')
+          var pasteRawHtmlInputElement = document.getElementById('paste-raw-html-input')
+          var pasteFormattedHtmlInputElement = document.getElementById('paste-formatted-html-input')
           var pasteTextInputElement = document.getElementById('paste-text-input')
           var pasteGovspeakElement = document.getElementById('paste-govspeak')
           var htmlTextarea = document.getElementById('html-textarea')
@@ -80,9 +84,17 @@
 
           pasteTextarea.addEventListener('htmlpaste', function (e) {
             if (e.detail) {
-              pasteHtmlInputElement.textContent = prettyHtml(e.detail)
+              pasteRawHtmlInputElement.textContent = e.detail
+
+              try {
+                pasteFormattedHtmlInputElement.textContent = prettyHtml(e.detail)
+              } catch (err) {
+                console.error('Failed to make the HTML pretty: ' + err.message)
+                pasteFormattedHtmlInputElement.textContent = 'HTML failed to be formatted'
+              }
             } else {
-              pasteHtmlInputElement.textContent = 'HTML was not pasted'
+              pasteRawHtmlInputElement.textContent = 'HTML was not pasted'
+              pasteFormattedHtmlInputElement.textContent = 'HTML was not pasted'
             }
           })
 
@@ -109,16 +121,11 @@
           htmlToGovspeakListener()
 
           function prettyHtml (html) {
-            try {
-              return window.html_beautify(html, {
-                indent_size: 2,
-                wrap_line_length: 160,
-                wrap_attributes: 'force-expand-multiline'
-              })
-            } catch (err) {
-              console.error('Failed to make the HTML pretty: ' + err.message)
-              return html
-            }
+            return window.html_beautify(html, {
+              indent_size: 2,
+              wrap_line_length: 160,
+              wrap_attributes: 'force-expand-multiline'
+            })
           }
         </script>
       </main>
