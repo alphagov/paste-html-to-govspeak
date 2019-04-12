@@ -10,6 +10,7 @@
 
 ## Unreleased
 
+- Convert Microsoft Word lists to markdown lists (PR #42)
 - Convert h1 headers to h2, convert h4 and h5 headers to h3 (PR #41)
 - Remove comments produced by Microsoft Word 2016 (PR #40)
 - Fix dist file containing ES2015 and regex breaking in IE11 (PR #39)

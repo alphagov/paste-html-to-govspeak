@@ -287,3 +287,40 @@ it('removes Microsoft Word comments', () => {
   // is released.
   expect(htmlToGovspeak(html)).toEqual('A document with  a comment')
 })
+
+it('Converts a MS Word unordered list to a markdown list', () => {
+  const html = openFixture('word-2016-unordered-list.html')
+
+  expect(htmlToGovspeak(html)).toEqual(
+    '- Item 1\n' +
+    '- Item 2\n' +
+    '- Item 3\n' +
+    '- Item 4'
+  )
+})
+
+it('Converts a MS Word ordered list to a markdown list', () => {
+  const html = openFixture('word-2016-ordered-list.html')
+
+  expect(htmlToGovspeak(html)).toEqual(
+    '1. Item 1\n' +
+    '2. Item 2\n' +
+    '3. Item 3\n' +
+    '4. Item 4'
+  )
+})
+
+it('Converts a MS Word nested list to a markdown list', () => {
+  const html = openFixture('word-2016-nested-list.html')
+
+  expect(htmlToGovspeak(html)).toEqual(
+    '1. Parent 1\n' +
+    '   1. Parent 1 Child 1\n' +
+    '      1. Parent 1 Child 1 Grandchild 1\n' +
+    '      2. Parent 1 Child 1 Grandchild 2\n' +
+    '      3. Parent 1 Child 1 Grandchild 3\n' +
+    '   2. Parent 1 Child 2\n' +
+    '2. Parent 2\n' +
+    '   1. Parent 2 Child 1'
+  )
+})
