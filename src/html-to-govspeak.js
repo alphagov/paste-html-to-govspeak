@@ -220,33 +220,37 @@ service.addRule('removeWordListBullets', {
   replacement: () => ''
 })
 
+// Given a node it returns the Microsoft Word list level, returning undefined
+// for an item that isn'ta Word list node
+function getWordListLevel (node) {
+  if (node.nodeName.toLowerCase() !== 'p') {
+    return
+  }
+
+  const style = node.getAttribute('style')
+  const levelMatch = style && style.match(/mso-list/i) ? style.match(/level(\d+)/) : null
+  return levelMatch ? parseInt(levelMatch[1], 10) : undefined
+}
+
+function isWordListItem (node) {
+  return !!getWordListLevel(node)
+}
+
 service.addRule('addWordListItem', {
-  filter: (node) => {
-    if (node.nodeName.toLowerCase() !== 'p') {
-      return
-    }
-
-    return node.className.match(/msolistparagraphcxsp/i)
-  },
+  filter: (node) => isWordListItem(node),
   replacement: (content, node, options) => {
-    // the first item in a list (nested or otherwise) has first in the class
-    // name
-    let prefix = node.className.match(/first/i) ? '\n\n' : ''
+    const firstListItem = !node.previousElementSibling || !isWordListItem(node.previousElementSibling)
+    let prefix = firstListItem ? '\n\n' : ''
 
-    const getLevel = (element) => {
-      const style = element.getAttribute('style')
-      const levelMatch = style ? style.match(/level(\d+)/) : null
-      return levelMatch ? parseInt(levelMatch[1], 10) : 0
-    }
     // we can determine the nesting of a list by a mso-list style attribute
     // with a level
-    const nodeLevel = getLevel(node)
+    const nodeLevel = getWordListLevel(node)
     for (let i = 1; i < nodeLevel; i++) {
       prefix += options.listIndent
     }
 
-    // the last item in a list has last in the class name
-    const suffix = node.className.match(/last/i) ? '\n\n' : '\n'
+    const lastListItem = !node.nextElementSibling || !isWordListItem(node.nextElementSibling)
+    const suffix = lastListItem ? '\n\n' : '\n'
 
     let listMarker = options.bulletListMarker
     const markerElement = node.querySelector('span[style="mso-list:Ignore"]')
@@ -257,11 +261,12 @@ service.addRule('addWordListItem', {
       let item = 1
       let potentialListItem = node.previousElementSibling
       // loop through previous siblings to count list items
-      while (potentialListItem && potentialListItem.className.match(/msolistparagraphcxsp/i)) {
-        let itemLevel = getLevel(potentialListItem)
+      while (potentialListItem) {
+        let itemLevel = getWordListLevel(potentialListItem)
 
-        // if we encounter the lists parent we've reached the end of counting
-        if (itemLevel < nodeLevel) {
+        // if there are no more list items or we encounter the lists parent
+        // we don't need to count further
+        if (!itemLevel || itemLevel < nodeLevel) {
           break
         }
 

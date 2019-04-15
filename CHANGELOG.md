@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## Unreleased
+
+- Widen word list support (PR #46)
+
 ## 0.2.0
 
 - Convert Microsoft Word lists to markdown lists (PR #42)
