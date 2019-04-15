@@ -8,7 +8,7 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
-## Unreleased
+## 0.2.1
 
 - Widen word list support (PR #46)
 

@@ -1,6 +1,6 @@
 {
   "name": "paste-html-to-govspeak",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Converts HTML formatted rich content to govspeak format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.",
   "main": "dist/paste-html-to-markdown.js",
   "scripts": {
