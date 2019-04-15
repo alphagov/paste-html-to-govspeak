@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## Unreleased
+
+- Strip links that match URL and are the only content of a paste document (PR #48)
+
 ## 0.2.1
 
 - Widen word list support (PR #46)
