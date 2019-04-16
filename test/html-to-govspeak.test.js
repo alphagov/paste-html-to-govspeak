@@ -344,3 +344,12 @@ it('Converts a MS Word list that uses msoNormal classes', () => {
     '- Item 2'
   )
 })
+
+it('Doesn\'t preserve markdown that is only a link with similar text to the link', () => {
+  // If you paste the URL from the address bar of chrome this is the HTML created
+  const html = `
+    <meta charset='utf-8'><a href="https://alphagov.github.io/paste-html-to-govspeak/">https://alphagov.github.io/paste-html-to-govspeak/</a>
+  `
+
+  expect(htmlToGovspeak(html)).toEqual('https://alphagov.github.io/paste-html-to-govspeak/')
+})

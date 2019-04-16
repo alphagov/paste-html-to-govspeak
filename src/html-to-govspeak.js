@@ -285,6 +285,23 @@ service.addRule('addWordListItem', {
   }
 })
 
+// Remove links that have same href as link text and are the only content
+// in a pasted document. This is because we assume here that they're trying
+// to paste just a plain text URL.
+service.addRule('removeAddressBarLinks', {
+  filter: (node, options) => {
+    if (node.nodeName.toLowerCase() !== 'a' || !node.getAttribute('href')) {
+      return
+    }
+
+    const href = node.getAttribute('href').trim()
+
+    return href === node.textContent.trim() &&
+      href === node.ownerDocument.body.textContent.trim()
+  },
+  replacement: (content) => content
+})
+
 function removeBrParagraphs (govspeak) {
   // This finds places where we have a br in a paragraph on it's own and
   // removes it.
