@@ -8,7 +8,7 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
-## Unreleased
+## 0.2.2
 
 - Strip links that match URL and are the only content of a paste document (PR #48)
 
