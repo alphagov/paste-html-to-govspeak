@@ -236,6 +236,43 @@ function isMsWordListItem (node) {
   return !!getMsWordListLevel(node)
 }
 
+// Based on a node that is a list item in a MS Word document, this returns
+// the marker for the list.
+function msWordListMarker (node, bulletListMarker) {
+  const markerElement = node.querySelector('span[style="mso-list:Ignore"]')
+
+  // assume the presence of a period in a marker is an indicator of an
+  // ordered list
+  if (!markerElement || !markerElement.textContent.match(/\./)) {
+    return bulletListMarker
+  }
+
+  const nodeLevel = getMsWordListLevel(node)
+
+  let item = 1
+  let potentialListItem = node.previousElementSibling
+
+  // loop through previous siblings to count list items
+  while (potentialListItem) {
+    let itemLevel = getMsWordListLevel(potentialListItem)
+
+    // if there are no more list items or we encounter the lists parent
+    // we don't need to count further
+    if (!itemLevel || itemLevel < nodeLevel) {
+      break
+    }
+
+    // if on same level increment the list items
+    if (nodeLevel === itemLevel) {
+      item += 1
+    }
+
+    potentialListItem = potentialListItem.previousElementSibling
+  }
+
+  return `${item}.`
+}
+
 service.addRule('addMsWordListItem', {
   filter: (node) => isMsWordListItem(node),
   replacement: (content, node, options) => {
@@ -252,34 +289,7 @@ service.addRule('addMsWordListItem', {
     const lastListItem = !node.nextElementSibling || !isMsWordListItem(node.nextElementSibling)
     const suffix = lastListItem ? '\n\n' : '\n'
 
-    let listMarker = options.bulletListMarker
-    const markerElement = node.querySelector('span[style="mso-list:Ignore"]')
-
-    // assume the presence of a period in a marker is an indicator of an
-    // ordered list
-    if (markerElement && markerElement.textContent.match(/\./)) {
-      let item = 1
-      let potentialListItem = node.previousElementSibling
-      // loop through previous siblings to count list items
-      while (potentialListItem) {
-        let itemLevel = getMsWordListLevel(potentialListItem)
-
-        // if there are no more list items or we encounter the lists parent
-        // we don't need to count further
-        if (!itemLevel || itemLevel < nodeLevel) {
-          break
-        }
-
-        // if on same level increment the list items
-        if (nodeLevel === itemLevel) {
-          item += 1
-        }
-
-        potentialListItem = potentialListItem.previousElementSibling
-      }
-
-      listMarker = `${item}.`
-    }
+    let listMarker = msWordListMarker(node, options.bulletListMarker)
 
     return `${prefix}${listMarker} ${content.trim()}${suffix}`
   }
