@@ -279,14 +279,14 @@ it('strips whitespace caused by surrounding, non-visual elements', () => {
   expect(htmlToGovspeak(html)).toEqual('Some text')
 })
 
-it('removes Microsoft Word comments', () => {
-  const html = openFixture('word-2016-comments.html')
+it('removes MS Word comments', () => {
+  const html = openFixture('ms-word-2016-comments.html')
 
   expect(htmlToGovspeak(html)).toEqual('A document with a comment')
 })
 
 it('Converts a MS Word unordered list to a markdown list', () => {
-  const html = openFixture('word-2016-unordered-list.html')
+  const html = openFixture('ms-word-2016-unordered-list.html')
 
   expect(htmlToGovspeak(html)).toEqual(
     '- Item 1\n' +
@@ -297,7 +297,7 @@ it('Converts a MS Word unordered list to a markdown list', () => {
 })
 
 it('Converts a MS Word ordered list to a markdown list', () => {
-  const html = openFixture('word-2016-ordered-list.html')
+  const html = openFixture('ms-word-2016-ordered-list.html')
 
   expect(htmlToGovspeak(html)).toEqual(
     '1. Item 1\n' +
@@ -308,7 +308,7 @@ it('Converts a MS Word ordered list to a markdown list', () => {
 })
 
 it('Converts a MS Word nested list to a markdown list', () => {
-  const html = openFixture('word-2016-nested-list.html')
+  const html = openFixture('ms-word-2016-nested-list.html')
 
   expect(htmlToGovspeak(html)).toEqual(
     '1. Parent 1\n' +
@@ -323,7 +323,7 @@ it('Converts a MS Word nested list to a markdown list', () => {
 })
 
 it('Converts a MS Word list that uses msoNormal classes', () => {
-  // simplified version of the HTML word creates
+  // simplified version of the HTML MS Word creates
   const html = `
     <p class="MsoNormal" style="mso-list:l0 level1 1fo1">
       <span>

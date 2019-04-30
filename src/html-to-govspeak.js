@@ -192,7 +192,7 @@ service.addRule('listItems', {
   }
 })
 
-service.addRule('removeWordCommentElements', {
+service.addRule('removeMsWordCommentElements', {
   filter: (node) => {
     const nodeName = node.nodeName.toLowerCase()
     const classList = node.classList
@@ -210,7 +210,7 @@ service.addRule('removeWordCommentElements', {
   replacement: () => ''
 })
 
-service.addRule('removeWordListBullets', {
+service.addRule('removeMsWordListBullets', {
   filter: (node) => {
     if (node.nodeName.toLowerCase() === 'span') {
       const style = node.getAttribute('style')
@@ -221,8 +221,8 @@ service.addRule('removeWordListBullets', {
 })
 
 // Given a node it returns the Microsoft Word list level, returning undefined
-// for an item that isn'ta Word list node
-function getWordListLevel (node) {
+// for an item that isn't a MS Word list node
+function getMsWordListLevel (node) {
   if (node.nodeName.toLowerCase() !== 'p') {
     return
   }
@@ -232,54 +232,64 @@ function getWordListLevel (node) {
   return levelMatch ? parseInt(levelMatch[1], 10) : undefined
 }
 
-function isWordListItem (node) {
-  return !!getWordListLevel(node)
+function isMsWordListItem (node) {
+  return !!getMsWordListLevel(node)
 }
 
-service.addRule('addWordListItem', {
-  filter: (node) => isWordListItem(node),
+// Based on a node that is a list item in a MS Word document, this returns
+// the marker for the list.
+function msWordListMarker (node, bulletListMarker) {
+  const markerElement = node.querySelector('span[style="mso-list:Ignore"]')
+
+  // assume the presence of a period in a marker is an indicator of an
+  // ordered list
+  if (!markerElement || !markerElement.textContent.match(/\./)) {
+    return bulletListMarker
+  }
+
+  const nodeLevel = getMsWordListLevel(node)
+
+  let item = 1
+  let potentialListItem = node.previousElementSibling
+
+  // loop through previous siblings to count list items
+  while (potentialListItem) {
+    let itemLevel = getMsWordListLevel(potentialListItem)
+
+    // if there are no more list items or we encounter the lists parent
+    // we don't need to count further
+    if (!itemLevel || itemLevel < nodeLevel) {
+      break
+    }
+
+    // if on same level increment the list items
+    if (nodeLevel === itemLevel) {
+      item += 1
+    }
+
+    potentialListItem = potentialListItem.previousElementSibling
+  }
+
+  return `${item}.`
+}
+
+service.addRule('addMsWordListItem', {
+  filter: (node) => isMsWordListItem(node),
   replacement: (content, node, options) => {
-    const firstListItem = !node.previousElementSibling || !isWordListItem(node.previousElementSibling)
+    const firstListItem = !node.previousElementSibling || !isMsWordListItem(node.previousElementSibling)
     let prefix = firstListItem ? '\n\n' : ''
 
     // we can determine the nesting of a list by a mso-list style attribute
     // with a level
-    const nodeLevel = getWordListLevel(node)
+    const nodeLevel = getMsWordListLevel(node)
     for (let i = 1; i < nodeLevel; i++) {
       prefix += options.listIndent
     }
 
-    const lastListItem = !node.nextElementSibling || !isWordListItem(node.nextElementSibling)
+    const lastListItem = !node.nextElementSibling || !isMsWordListItem(node.nextElementSibling)
     const suffix = lastListItem ? '\n\n' : '\n'
 
-    let listMarker = options.bulletListMarker
-    const markerElement = node.querySelector('span[style="mso-list:Ignore"]')
-
-    // assume the presence of a period in a marker is an indicator of an
-    // ordered list
-    if (markerElement && markerElement.textContent.match(/\./)) {
-      let item = 1
-      let potentialListItem = node.previousElementSibling
-      // loop through previous siblings to count list items
-      while (potentialListItem) {
-        let itemLevel = getWordListLevel(potentialListItem)
-
-        // if there are no more list items or we encounter the lists parent
-        // we don't need to count further
-        if (!itemLevel || itemLevel < nodeLevel) {
-          break
-        }
-
-        // if on same level increment the list items
-        if (nodeLevel === itemLevel) {
-          item += 1
-        }
-
-        potentialListItem = potentialListItem.previousElementSibling
-      }
-
-      listMarker = `${item}.`
-    }
+    let listMarker = msWordListMarker(node, options.bulletListMarker)
 
     return `${prefix}${listMarker} ${content.trim()}${suffix}`
   }

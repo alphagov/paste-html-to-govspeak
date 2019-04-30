@@ -14,13 +14,13 @@
 
 ## 0.2.1
 
-- Widen word list support (PR #46)
+- Widen MS word list support (PR #46)
 
 ## 0.2.0
 
-- Convert Microsoft Word lists to markdown lists (PR #42)
+- Convert MS Word lists to markdown lists (PR #42)
 - Convert h1 headers to h2, convert h4 and h5 headers to h3 (PR #41)
-- Remove comments produced by Microsoft Word 2016 (PR #40)
+- Remove comments produced by MS Word 2016 (PR #40)
 - Fix dist file containing ES2015 and regex breaking in IE11 (PR #39)
 - Remove more undesirable elements and trim output whitespace (PR #38)
 
