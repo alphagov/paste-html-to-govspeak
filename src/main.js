@@ -1,5 +1,5 @@
 import htmlToGovspeak from './html-to-govspeak'
-import insertTextAtCursor from 'insert-text-at-cursor'
+import insertTextAtCursor from './insert-text-at-cursor'
 import legacyHtmlFromPaste from './legacy-html-from-paste'
 
 function htmlFromPasteEvent (event) {
