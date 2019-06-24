@@ -86,7 +86,12 @@ export default function (input, text) {
 
           // Finally insert a new node. The browser will automatically
           // split start and end nodes into two if necessary
-          range.insertNode(textNode)
+          if (range.commonAncestorContainer.nodeName === '#text') {
+            range.insertNode(textNode)
+          } else {
+            var value = input.value
+            input.value = value.slice(0, start) + text + value.slice(end)
+          }
         }
       } else {
         // For the text input the only way is to replace the whole value :(
