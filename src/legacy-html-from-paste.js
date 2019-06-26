@@ -24,7 +24,15 @@ function getHtmlUsingHiddenElement (hiddenElement) {
   return hiddenElement.innerHTML
 }
 
+// Check for write access to clipboard, otherwise we're not allowed by the browser to paste in a contenteditable container
+function haveClipboardAccess () {
+  return window.clipboardData && window.clipboardData.setData('Text', '')
+}
+
 export default function legacyHtmlFromPaste () {
+  if (!haveClipboardAccess()) {
+    return false
+  }
   const hiddenElement = createHiddenElement()
   const html = getHtmlUsingHiddenElement(hiddenElement)
   removeElement(hiddenElement)
