@@ -8,6 +8,11 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## 0.2.3
+
+- Fix error when pasting content at the end of the textarea in IE11 by updating insert-text-at-cursor to 0.3.0 (PR #53)
+- Fix paste action when access to clipboard is disabled in IE11 (PR #52)
+
 ## 0.2.2
 
 - Strip links that match URL and are the only content of a paste document (PR #48)
