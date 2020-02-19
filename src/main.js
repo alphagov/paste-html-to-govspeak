@@ -22,7 +22,7 @@ function textFromPasteEvent (event) {
 }
 
 function triggerPasteEvent (element, eventName, detail) {
-  let params = { bubbles: false, cancelable: false, detail: detail || null }
+  const params = { bubbles: false, cancelable: false, detail: detail || null }
   let event
 
   if (typeof window.CustomEvent === 'function') {

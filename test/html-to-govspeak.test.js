@@ -69,19 +69,19 @@ it('removes image elements', () => {
 })
 
 it('removes title elements', () => {
-  expect(htmlToGovspeak(`<title>Title</title>`)).toEqual('')
+  expect(htmlToGovspeak('<title>Title</title>')).toEqual('')
 })
 
 it('removes script elements', () => {
-  expect(htmlToGovspeak(`<script>alert('hi')</script>`)).toEqual('')
+  expect(htmlToGovspeak('<script>alert("hi")</script>')).toEqual('')
 })
 
 it('removes noscript elements', () => {
-  expect(htmlToGovspeak(`<noscript>Enable JS</noscript>`)).toEqual('')
+  expect(htmlToGovspeak('<noscript>Enable JS</noscript>')).toEqual('')
 })
 
 it('removes style elements', () => {
-  expect(htmlToGovspeak(`<style>p {color:red;}</style>`)).toEqual('')
+  expect(htmlToGovspeak('<style>p {color:red;}</style>')).toEqual('')
 })
 
 it('removes video elements', () => {
@@ -253,7 +253,7 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
 })
 
 it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
-  const html = `Some text<span>&nbsp;</span>and some more text`
+  const html = 'Some text<span>&nbsp;</span>and some more text'
 
   expect(htmlToGovspeak(html)).toEqual('Some text and some more text')
 })
@@ -262,7 +262,7 @@ it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
 // investigation. This should be resolved when/if https://github.com/domchristie/turndown/pull/281
 // is released.
 it('Maintains behaviour where a <span> </span> produces a double space', () => {
-  const html = `Some text<span> </span>and some more text`
+  const html = 'Some text<span> </span>and some more text'
 
   expect(htmlToGovspeak(html)).toEqual('Some text  and some more text')
 })

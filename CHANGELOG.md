@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## 0.2.4
+
+- Bump dependencies to resolve security issues
+
 ## 0.2.3
 
 - Fix error when pasting content at the end of the textarea in IE11 by updating insert-text-at-cursor to 0.3.0 (PR #53)

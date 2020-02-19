@@ -1,6 +1,6 @@
 {
   "name": "paste-html-to-govspeak",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Converts HTML formatted rich content to govspeak format (a markdown extension library for government editors) when pasted from clipboard into a form input or textarea.",
   "main": "dist/paste-html-to-markdown.js",
   "scripts": {
@@ -37,17 +37,17 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "babel-jest": "^24.7.1",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-jest": "^25.1.0",
     "insert-text-at-cursor": "^0.3.0",
-    "jest": "^24.7.1",
+    "jest": "^25.1.0",
     "npm-watch": "^0.6.0",
-    "rollup": "^1.10.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-node-resolve": "^4.2.3",
-    "standard": "^12.0.1",
+    "rollup": "^1.31.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "standard": "^14.3.1",
     "turndown": "^5.0.3"
   }
 }
