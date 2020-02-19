@@ -5,7 +5,7 @@
 // innerHTML of that element before finally removing it.
 // This approach is explained more thoroughly in: https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
 function createHiddenElement () {
-  let hiddenElement = document.createElement('div')
+  const hiddenElement = document.createElement('div')
   hiddenElement.setAttribute('contenteditable', true)
   hiddenElement.setAttribute('style', 'position: absolute; top:0; left: 0; opacity: 0;')
   document.body.appendChild(hiddenElement)

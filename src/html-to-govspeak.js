@@ -82,7 +82,7 @@ service.addRule('heading', {
   filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
   replacement: (content, node) => {
     let prefix
-    let number = node.nodeName.charAt(1)
+    const number = node.nodeName.charAt(1)
     if (number === '1' || number === '2') {
       prefix = '## '
     } else if (number === '3' || number === '4' || number === '5') {
@@ -254,7 +254,7 @@ function msWordListMarker (node, bulletListMarker) {
 
   // loop through previous siblings to count list items
   while (potentialListItem) {
-    let itemLevel = getMsWordListLevel(potentialListItem)
+    const itemLevel = getMsWordListLevel(potentialListItem)
 
     // if there are no more list items or we encounter the lists parent
     // we don't need to count further
@@ -288,8 +288,7 @@ service.addRule('addMsWordListItem', {
 
     const lastListItem = !node.nextElementSibling || !isMsWordListItem(node.nextElementSibling)
     const suffix = lastListItem ? '\n\n' : '\n'
-
-    let listMarker = msWordListMarker(node, options.bulletListMarker)
+    const listMarker = msWordListMarker(node, options.bulletListMarker)
 
     return `${prefix}${listMarker} ${content.trim()}${suffix}`
   }
