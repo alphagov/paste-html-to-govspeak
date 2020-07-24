@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## 0.2.5
+
+- Bump dependencies
+
 ## 0.2.4
 
 - Bump dependencies to resolve security issues

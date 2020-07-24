@@ -258,13 +258,9 @@ it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
   expect(htmlToGovspeak(html)).toEqual('Some text and some more text')
 })
 
-// This test is here to document an undesirable case that took a lot of
-// investigation. This should be resolved when/if https://github.com/domchristie/turndown/pull/281
-// is released.
-it('Maintains behaviour where a <span> </span> produces a double space', () => {
-  const html = 'Some text<span> </span>and some more text'
-
-  expect(htmlToGovspeak(html)).toEqual('Some text  and some more text')
+it('resolves duplicated whitespace inside an empty element', () => {
+  const html = 'Some text <span> </span> and some more text'
+  expect(htmlToGovspeak(html)).toEqual('Some text and some more text')
 })
 
 // The presence of elements preceeding text that is rendered can cause
