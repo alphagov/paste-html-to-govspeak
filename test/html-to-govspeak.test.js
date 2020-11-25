@@ -2,9 +2,10 @@
 
 import htmlToGovspeak from '../src/html-to-govspeak'
 import fs from 'fs'
+import path from 'path'
 
 function openFixture (fixturePath) {
-  const filePath = `${__dirname}/__fixtures__/${fixturePath}`
+  const filePath = path.join(__dirname, '__fixtures__', fixturePath)
   return fs.readFileSync(filePath, 'utf8')
 }
 
