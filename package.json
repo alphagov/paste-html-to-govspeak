@@ -11,6 +11,9 @@
     "lint": "standard",
     "watch": "npm-watch"
   },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "standard": {
     "ignore": [
       "dist/*"
