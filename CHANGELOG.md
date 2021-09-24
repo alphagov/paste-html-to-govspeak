@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## Unreleased
+
+- Reduce unnecessary files from node module
+
 ## 0.2.5
 
 - Bump dependencies

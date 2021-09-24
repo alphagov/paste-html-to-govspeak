@@ -19,6 +19,7 @@
       "dist/*"
     ]
   },
+  "files": ["src", "dist"],
   "watch": {
     "build": "src/*.js"
   },
