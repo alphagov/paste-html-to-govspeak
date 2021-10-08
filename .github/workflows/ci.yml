@@ -46,4 +46,4 @@ jobs:
         if: ${{ steps.version.outputs.local != steps.version.outputs.remote }}
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.ALPHAGOV_NPM_AUTOMATION_TOKEN }}
