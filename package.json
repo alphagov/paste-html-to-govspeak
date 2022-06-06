@@ -19,7 +19,10 @@
       "dist/*"
     ]
   },
-  "files": ["src", "dist"],
+  "files": [
+    "src",
+    "dist"
+  ],
   "watch": {
     "build": "src/*.js"
   },
@@ -54,5 +57,6 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "standard": "^17.0.0",
     "turndown": "^6.0.0"
-  }
+  },
+  "dependencies": {}
 }
