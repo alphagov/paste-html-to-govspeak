@@ -11,6 +11,10 @@
     "lint": "standard",
     "watch": "npm-watch"
   },
+  "babel": {
+    "presets": ["@babel/preset-env"]
+  },
+  "browserslist": "defaults, IE 11",
   "jest": {
     "testEnvironment": "jsdom"
   },
