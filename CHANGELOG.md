@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## 0.3.0
+
+- Maintain heading level from H2 to H6 (PR #235)
+
 ## 0.2.6
 
 - Reduce unnecessary files from node module
