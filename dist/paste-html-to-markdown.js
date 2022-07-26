@@ -973,18 +973,10 @@
   service.addRule('heading', {
     filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     replacement: function replacement(content, node) {
-      var prefix;
-      var number = node.nodeName.charAt(1);
-
-      if (number === '1' || number === '2') {
-        prefix = '## ';
-      } else if (number === '3' || number === '4' || number === '5') {
-        prefix = '### ';
-      } else {
-        prefix = '';
-      }
-
-      return "\n\n".concat(prefix).concat(content, "\n\n");
+      var headingLevel = parseInt(node.nodeName.charAt(1));
+      headingLevel = headingLevel === 1 ? 2 : headingLevel;
+      var prefix = Array(headingLevel + 1).join('#');
+      return "\n\n".concat(prefix, " ").concat(content, "\n\n");
     }
   }); // remove images
   // this needs to be set as a rule rather than remove as it's part of turndown
