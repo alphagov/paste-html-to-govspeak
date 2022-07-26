@@ -81,17 +81,11 @@ service.addRule('abbr', {
 service.addRule('heading', {
   filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
   replacement: (content, node) => {
-    let prefix
-    const number = node.nodeName.charAt(1)
-    if (number === '1' || number === '2') {
-      prefix = '## '
-    } else if (number === '3' || number === '4' || number === '5') {
-      prefix = '### '
-    } else {
-      prefix = ''
-    }
+    let headingLevel = parseInt(node.nodeName.charAt(1))
+    headingLevel = headingLevel === 1 ? 2 : headingLevel
+    const prefix = Array(headingLevel + 1).join('#')
 
-    return `\n\n${prefix}${content}\n\n`
+    return `\n\n${prefix} ${content}\n\n`
   }
 })
 

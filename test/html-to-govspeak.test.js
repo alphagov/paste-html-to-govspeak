@@ -37,22 +37,16 @@ it('converts lists to a dash bullet style', () => {
   expect(htmlToGovspeak(html)).toEqual('- Item 1\n- Item 2')
 })
 
-it('maintains H2 and H3 headers', () => {
-  expect(htmlToGovspeak('<h2>Hello</h2>')).toEqual('## Hello')
-  expect(htmlToGovspeak('<h3>Hello</h3>')).toEqual('### Hello')
-})
-
 it('converts h1 headers to h2', () => {
   expect(htmlToGovspeak('<h1>Hello</h1>')).toEqual('## Hello')
 })
 
-it('converts h4 and h5 headers to h3', () => {
-  expect(htmlToGovspeak('<h4>Hello</h4>')).toEqual('### Hello')
-  expect(htmlToGovspeak('<h5>Hello</h5>')).toEqual('### Hello')
-})
-
-it('strips h6 headers', () => {
-  expect(htmlToGovspeak('<h6>Hello</h6>')).toEqual('Hello')
+it('maintains headers from h2 to h6 headers', () => {
+  expect(htmlToGovspeak('<h2>Hello</h2>')).toEqual('## Hello')
+  expect(htmlToGovspeak('<h3>Hello</h3>')).toEqual('### Hello')
+  expect(htmlToGovspeak('<h4>Hello</h4>')).toEqual('#### Hello')
+  expect(htmlToGovspeak('<h5>Hello</h5>')).toEqual('##### Hello')
+  expect(htmlToGovspeak('<h6>Hello</h6>')).toEqual('###### Hello')
 })
 
 it('strips b and strong elements', () => {
