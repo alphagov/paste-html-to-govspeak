@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.pasteHtmlToGovspeak = {}));
-}(this, (function (exports) { 'use strict';
+})(this, (function (exports) { 'use strict';
 
   function extend (destination) {
     for (var i = 1; i < arguments.length; i++) {
@@ -711,7 +711,7 @@
       if (input === '') return ''
 
       var output = process.call(this, new RootNode(input));
-      return postProcess.call(this, output)
+      return postProcess$1.call(this, output)
     },
 
     /**
@@ -820,7 +820,7 @@
    * @type String
    */
 
-  function postProcess (output) {
+  function postProcess$1 (output) {
     var self = this;
     this.rules.forEach(function (rule) {
       if (typeof rule.append === 'function') {
@@ -1214,7 +1214,7 @@
     return govspeak.replace(headingsInListsRegExp, '$1');
   }
 
-  function postProcess$1(govspeak) {
+  function postProcess(govspeak) {
     var govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeak);
     var brsRemoved = removeBrParagraphs(govspeakWithExtractedHeadings);
     var whitespaceStripped = brsRemoved.trim();
@@ -1223,7 +1223,7 @@
 
   function htmlToGovspeak(html) {
     var govspeak = service.turndown(html);
-    return postProcess$1(govspeak);
+    return postProcess(govspeak);
   }
 
   var browserSupportsTextareaTextNodes;
@@ -1438,5 +1438,5 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
 //# sourceMappingURL=paste-html-to-markdown.js.map
