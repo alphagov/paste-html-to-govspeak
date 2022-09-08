@@ -247,12 +247,6 @@ it('fixes an invalid nested ordered list that Google Docs produces', () => {
   )
 })
 
-it('Fixes cases where a <span>&nbsp;</span> has the space stripped', () => {
-  const html = 'Some text<span>&nbsp;</span>and some more text'
-
-  expect(htmlToGovspeak(html)).toEqual('Some text and some more text')
-})
-
 it('resolves duplicated whitespace inside an empty element', () => {
   const html = 'Some text <span> </span> and some more text'
   expect(htmlToGovspeak(html)).toEqual('Some text and some more text')

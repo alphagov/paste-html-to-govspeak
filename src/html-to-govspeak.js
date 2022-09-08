@@ -2,19 +2,7 @@ import TurndownService from 'turndown'
 
 const service = new TurndownService({
   bulletListMarker: '-',
-  listIndent: '   ', // 3 spaces
-  blankReplacement: (content, node) => {
-    if (node.isBlock) {
-      return '\n\n'
-    }
-
-    // This fixes an issue with turndown where an element with a space
-    // inside can be removed causing a jarring HTML coversion.
-    const hasWhitespace = /\s/.test(node.textContent)
-    const hasFlanking = node.flankingWhitespace.trailing || node.flankingWhitespace.leading
-
-    return hasWhitespace && !hasFlanking ? ' ' : ''
-  }
+  listIndent: '   ' // 3 spaces
 })
 
 // define all the elements we want stripped from output
@@ -201,7 +189,15 @@ service.addRule('removeMsWordCommentElements', {
       return true
     }
   },
-  replacement: () => ''
+  replacement: (content, node) => {
+    // comments can get caught with a non-breaking space trailing, so we'll
+    // manually remove it
+    if (node.flankingWhitespace) {
+      if (node.flankingWhitespace.leading === '\xA0') node.flankingWhitespace.leading = ''
+      if (node.flankingWhitespace.trailing === '\xA0') node.flankingWhitespace.trailing = ''
+    }
+    return ''
+  }
 })
 
 service.addRule('removeMsWordListBullets', {
