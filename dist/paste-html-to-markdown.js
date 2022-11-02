@@ -950,24 +950,23 @@
   var service = new TurndownService({
     bulletListMarker: '-',
     listIndent: '   ' // 3 spaces
+  });
 
-  }); // define all the elements we want stripped from output
-
+  // define all the elements we want stripped from output
   var elementsToRemove = ['title', 'script', 'noscript', 'style', 'video', 'audio', 'object', 'iframe'];
-
   for (var _i = 0, _elementsToRemove = elementsToRemove; _i < _elementsToRemove.length; _i++) {
     var element = _elementsToRemove[_i];
     service.remove(element);
-  } // As a user may have pasted markdown we rather crudley
+  }
+
+  // As a user may have pasted markdown we rather crudley
   // stop all escaping
-
-
   service.escape = function (string) {
     return string;
-  }; // turndown keeps title attribute attributes of links by default which isn't
+  };
+
+  // turndown keeps title attribute attributes of links by default which isn't
   // what is expected in govspeak
-
-
   service.addRule('link', {
     filter: function filter(node) {
       return node.nodeName.toLowerCase() === 'a' && node.getAttribute('href');
@@ -993,21 +992,18 @@
       if (Object.keys(this.references).length === 0) {
         return '';
       }
-
       var references = '\n\n';
-
       for (var abbr in this.references) {
         references += "*[".concat(abbr, "]: ").concat(this.references[abbr], "\n");
       }
-
       this.references = {}; // reset after appending
-
       return references;
     }
-  }); // GOV.UK content authors are encouraged to only use h2 and h3 headers, this
+  });
+
+  // GOV.UK content authors are encouraged to only use h2 and h3 headers, this
   // converts other headers to be one of these (except h6 which is converted
   // to a paragraph
-
   service.addRule('heading', {
     filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     replacement: function replacement(content, node) {
@@ -1016,24 +1012,27 @@
       var prefix = Array(headingLevel + 1).join('#');
       return "\n\n".concat(prefix, " ").concat(content, "\n\n");
     }
-  }); // remove images
+  });
+
+  // remove images
   // this needs to be set as a rule rather than remove as it's part of turndown
   // commonmark rules that needs overriding
-
   service.addRule('img', {
     filter: ['img'],
     replacement: function replacement() {
       return '';
     }
-  }); // remove bold
+  });
 
+  // remove bold
   service.addRule('bold', {
     filter: ['b', 'strong'],
     replacement: function replacement(content) {
       return content;
     }
-  }); // remove italic
+  });
 
+  // remove italic
   service.addRule('italic', {
     filter: ['i', 'em'],
     replacement: function replacement(content) {
@@ -1047,8 +1046,9 @@
     replacement: function replacement() {
       return '';
     }
-  }); // strip paragraph elements within list items
+  });
 
+  // strip paragraph elements within list items
   service.addRule('stripParagraphsInListItems', {
     filter: function filter(node) {
       return node.nodeName.toLowerCase() === 'p' && node.parentNode.nodeName.toLowerCase() === 'li';
@@ -1066,14 +1066,14 @@
     replacement: function replacement(content, node) {
       return node.getAttribute('href');
     }
-  }); // Google docs has a habit of producing nested lists that are not nested
+  });
+
+  // Google docs has a habit of producing nested lists that are not nested
   // with valid HTML. Rather than embedding sub lists inside an <li> element they
   // are nested in the <ul> or <ol> element.
-
   service.addRule('invalidNestedLists', {
     filter: function filter(node) {
       var nodeName = node.nodeName.toLowerCase();
-
       if ((nodeName === 'ul' || nodeName === 'ol') && node.previousElementSibling) {
         var previousNodeName = node.previousElementSibling.nodeName.toLowerCase();
         return previousNodeName === 'li';
@@ -1083,16 +1083,17 @@
       content = content.replace(/^\n+/, '') // remove leading newlines
       .replace(/\n+$/, '') // replace trailing newlines
       .replace(/\n/gm, "\n".concat(options.listIndent)); // indent all nested content in the list
-      // indent this list to match sibling
 
+      // indent this list to match sibling
       return options.listIndent + content + '\n';
     }
-  }); // This is ported from https://github.com/domchristie/turndown/blob/80297cebeae4b35c8d299b1741b383c74eddc7c1/src/commonmark-rules.js#L61-L80
+  });
+
+  // This is ported from https://github.com/domchristie/turndown/blob/80297cebeae4b35c8d299b1741b383c74eddc7c1/src/commonmark-rules.js#L61-L80
   // It is modified in the following ways:
   // - Only determines ol ordering based on li elements
   // - Removes handling of ol start attribute as this doesn't affect govspeak output
   // - Makes spacing consistent with gov.uk markdown guidance
-
   service.addRule('listItems', {
     filter: 'li',
     replacement: function replacement(content, node, options) {
@@ -1102,7 +1103,6 @@
 
       var prefix = options.bulletListMarker + ' ';
       var parent = node.parentNode;
-
       if (parent.nodeName.toLowerCase() === 'ol') {
         var listItems = Array.prototype.filter.call(parent.children, function (element) {
           return element.nodeName.toLowerCase() === 'li';
@@ -1110,7 +1110,6 @@
         var index = Array.prototype.indexOf.call(listItems, node);
         prefix = (index + 1).toString() + '. ';
       }
-
       return prefix + content + (node.nextSibling && !/\n$/.test(content) ? '\n' : '');
     }
   });
@@ -1118,15 +1117,12 @@
     filter: function filter(node) {
       var nodeName = node.nodeName.toLowerCase();
       var classList = node.classList;
-
       if (nodeName === 'hr' && classList.contains('msocomoff')) {
         return true;
       }
-
       if (nodeName === 'span' && classList.contains('MsoCommentReference')) {
         return true;
       }
-
       if (nodeName === 'div' && classList.contains('msocomtxt')) {
         return true;
       }
@@ -1138,7 +1134,6 @@
         if (node.flankingWhitespace.leading === '\xA0') node.flankingWhitespace.leading = '';
         if (node.flankingWhitespace.trailing === '\xA0') node.flankingWhitespace.trailing = '';
       }
-
       return '';
     }
   });
@@ -1152,86 +1147,83 @@
     replacement: function replacement() {
       return '';
     }
-  }); // Given a node it returns the Microsoft Word list level, returning undefined
-  // for an item that isn't a MS Word list node
+  });
 
+  // Given a node it returns the Microsoft Word list level, returning undefined
+  // for an item that isn't a MS Word list node
   function getMsWordListLevel(node) {
     if (node.nodeName.toLowerCase() !== 'p') {
       return;
     }
-
     var style = node.getAttribute('style');
     var levelMatch = style && style.match(/mso-list/i) ? style.match(/level(\d+)/) : null;
     return levelMatch ? parseInt(levelMatch[1], 10) : undefined;
   }
-
   function isMsWordListItem(node) {
     return !!getMsWordListLevel(node);
-  } // Based on a node that is a list item in a MS Word document, this returns
+  }
+
+  // Based on a node that is a list item in a MS Word document, this returns
   // the marker for the list.
-
-
   function msWordListMarker(node, bulletListMarker) {
-    var markerElement = node.querySelector('span[style="mso-list:Ignore"]'); // assume the presence of a period in a marker is an indicator of an
-    // ordered list
+    var markerElement = node.querySelector('span[style="mso-list:Ignore"]');
 
+    // assume the presence of a period in a marker is an indicator of an
+    // ordered list
     if (!markerElement || !markerElement.textContent.match(/\./)) {
       return bulletListMarker;
     }
-
     var nodeLevel = getMsWordListLevel(node);
     var item = 1;
-    var potentialListItem = node.previousElementSibling; // loop through previous siblings to count list items
+    var potentialListItem = node.previousElementSibling;
 
+    // loop through previous siblings to count list items
     while (potentialListItem) {
-      var itemLevel = getMsWordListLevel(potentialListItem); // if there are no more list items or we encounter the lists parent
-      // we don't need to count further
+      var itemLevel = getMsWordListLevel(potentialListItem);
 
+      // if there are no more list items or we encounter the lists parent
+      // we don't need to count further
       if (!itemLevel || itemLevel < nodeLevel) {
         break;
-      } // if on same level increment the list items
+      }
 
-
+      // if on same level increment the list items
       if (nodeLevel === itemLevel) {
         item += 1;
       }
-
       potentialListItem = potentialListItem.previousElementSibling;
     }
-
     return "".concat(item, ".");
   }
-
   service.addRule('addMsWordListItem', {
     filter: function filter(node) {
       return isMsWordListItem(node);
     },
     replacement: function replacement(content, node, options) {
       var firstListItem = !node.previousElementSibling || !isMsWordListItem(node.previousElementSibling);
-      var prefix = firstListItem ? '\n\n' : ''; // we can determine the nesting of a list by a mso-list style attribute
+      var prefix = firstListItem ? '\n\n' : '';
+
+      // we can determine the nesting of a list by a mso-list style attribute
       // with a level
-
       var nodeLevel = getMsWordListLevel(node);
-
       for (var i = 1; i < nodeLevel; i++) {
         prefix += options.listIndent;
       }
-
       var lastListItem = !node.nextElementSibling || !isMsWordListItem(node.nextElementSibling);
       var suffix = lastListItem ? '\n\n' : '\n';
       var listMarker = msWordListMarker(node, options.bulletListMarker);
       return "".concat(prefix).concat(listMarker, " ").concat(content.trim()).concat(suffix);
     }
-  }); // Remove links that have same href as link text and are the only content
+  });
+
+  // Remove links that have same href as link text and are the only content
   // in a pasted document. This is because we assume here that they're trying
   // to paste just a plain text URL.
-
   service.addRule('removeAddressBarLinks', {
     filter: function filter(node, options) {
       if (node.nodeName.toLowerCase() !== 'a' || !node.getAttribute('href')) {
         return;
       }
-
       var href = node.getAttribute('href').trim();
       return href === node.textContent.trim() && href === node.ownerDocument.body.textContent.trim();
     },
@@ -1239,7 +1231,6 @@
       return content;
     }
   });
-
   function removeBrParagraphs(govspeak) {
     // This finds places where we have a br in a paragraph on it's own and
     // removes it.
@@ -1251,21 +1242,18 @@
     var regExp = new RegExp("\n(".concat(service.options.br, "\n)+\n?"), 'g');
     return govspeak.replace(regExp, '\n');
   }
-
   function extractHeadingsFromLists(govspeak) {
     // This finds instances of headings within ordered lists and replaces them
     // with the headings only. This only applies to H2 and H3.
     var headingsInListsRegExp = /\d\.\s(#{2,3})/g;
     return govspeak.replace(headingsInListsRegExp, '$1');
   }
-
   function postProcess(govspeak) {
     var govspeakWithExtractedHeadings = extractHeadingsFromLists(govspeak);
     var brsRemoved = removeBrParagraphs(govspeakWithExtractedHeadings);
     var whitespaceStripped = brsRemoved.trim();
     return whitespaceStripped;
   }
-
   function htmlToGovspeak(html) {
     var govspeak = service.turndown(html);
     return postProcess(govspeak);
@@ -1397,29 +1385,25 @@
     document.body.appendChild(hiddenElement);
     return hiddenElement;
   }
-
   function removeElement(node) {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
     }
   }
-
   function getHtmlUsingHiddenElement(hiddenElement) {
     hiddenElement.focus();
     document.execCommand('paste');
     return hiddenElement.innerHTML;
-  } // Check for write access to clipboard, otherwise we're not allowed by the browser to paste in a contenteditable container
+  }
 
-
+  // Check for write access to clipboard, otherwise we're not allowed by the browser to paste in a contenteditable container
   function haveClipboardAccess() {
     return window.clipboardData && window.clipboardData.setData('Text', '');
   }
-
   function legacyHtmlFromPaste() {
     if (!haveClipboardAccess()) {
       return false;
     }
-
     var hiddenElement = createHiddenElement();
     var html = getHtmlUsingHiddenElement(hiddenElement);
     removeElement(hiddenElement);
@@ -1436,7 +1420,6 @@
       return legacyHtmlFromPaste();
     }
   }
-
   function textFromPasteEvent(event) {
     if (event.clipboardData) {
       return event.clipboardData.getData('text/plain');
@@ -1444,7 +1427,6 @@
       return window.clipboardData.getData('Text');
     }
   }
-
   function triggerPasteEvent(element, eventName, detail) {
     var params = {
       bubbles: false,
@@ -1452,24 +1434,20 @@
       detail: detail || null
     };
     var event;
-
     if (typeof window.CustomEvent === 'function') {
       event = new window.CustomEvent(eventName, params);
     } else {
       event = document.createEvent('CustomEvent');
       event.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
     }
-
     element.dispatchEvent(event);
   }
-
   function pasteListener(event) {
     var element = event.target;
     var html = htmlFromPasteEvent(event);
     triggerPasteEvent(element, 'htmlpaste', html);
     var text = textFromPasteEvent(event);
     triggerPasteEvent(element, 'textpaste', text);
-
     if (html && html.length) {
       var govspeak = htmlToGovspeak(html);
       triggerPasteEvent(element, 'govspeak', govspeak);
