@@ -86,7 +86,7 @@ npm run watch
 
 ## License
 
-Distributed under the MIT license. See LICENSE for details.
+[MIT License](LICENCE)
 
 [govspeak]: https://github.com/alphagov/govspeak
 [dist-file]: https://alphagov.github.io/paste-html-to-govspeak/dist/paste-html-to-markdown.js
