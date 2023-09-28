@@ -1,9 +1,12 @@
 import TurndownService from 'turndown'
+import tables from './tables'
 
 const service = new TurndownService({
   bulletListMarker: '-',
   listIndent: '   ' // 3 spaces
 })
+
+service.use(tables)
 
 // define all the elements we want stripped from output
 const elementsToRemove = [
