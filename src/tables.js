@@ -1,6 +1,5 @@
-var indexOf = Array.prototype.indexOf
-var every = Array.prototype.every
-var rules = {}
+const indexOf = Array.prototype.indexOf
+const rules = {}
 
 rules.tableCell = {
   filter: ['th', 'td'],
@@ -12,13 +11,13 @@ rules.tableCell = {
 rules.tableRow = {
   filter: 'tr',
   replacement: function (content, node) {
-    var borderCells = ''
-    var alignMap = { left: ':--', right: '--:', center: ':-:' }
+    let borderCells = ''
+    const alignMap = { left: ':--', right: '--:', center: ':-:' }
 
     if (isHeadingRow(node)) {
-      for (var i = 0; i < node.childNodes.length; i++) {
-        var border = '---'
-        var align = (
+      for (let i = 0; i < node.childNodes.length; i++) {
+        let border = '---'
+        const align = (
           node.childNodes[i].getAttribute('align') || ''
         ).toLowerCase()
 
@@ -32,8 +31,6 @@ rules.tableRow = {
 }
 
 rules.table = {
-  // Only convert tables with a heading row.
-  // Tables with no heading row are kept using `keep` (see below).
   filter: function (node) {
     return node.nodeName === 'TABLE' && isHeadingRow(node.rows[0])
   },
@@ -56,21 +53,19 @@ rules.tableSection = {
 // - the parent is a THEAD
 // - or if its the first child of the TABLE or the first TBODY (possibly
 //   following a blank THEAD)
-// - and every cell is a TH
 function isHeadingRow (tr) {
-  var parentNode = tr.parentNode
+  const parentNode = tr.parentNode
   return (
     parentNode.nodeName === 'THEAD' ||
     (
       parentNode.firstChild === tr &&
-      (parentNode.nodeName === 'TABLE' || isFirstTbody(parentNode)) &&
-      every.call(tr.childNodes, function (n) { return n.nodeName === 'TH' })
+      (parentNode.nodeName === 'TABLE' || isFirstTbody(parentNode))
     )
   )
 }
 
 function isFirstTbody (element) {
-  var previousSibling = element.previousSibling
+  const previousSibling = element.previousSibling
   return (
     element.nodeName === 'TBODY' && (
       !previousSibling ||
@@ -83,15 +78,12 @@ function isFirstTbody (element) {
 }
 
 function cell (content, node) {
-  var index = indexOf.call(node.parentNode.childNodes, node)
-  var prefix = ' '
+  const index = indexOf.call(node.parentNode.childNodes, node)
+  let prefix = ' '
   if (index === 0) prefix = '| '
   return prefix + content.trim() + ' |'
 }
 
 export default function tables (turndownService) {
-  turndownService.keep(function (node) {
-    return node.nodeName === 'TABLE' && !isHeadingRow(node.rows[0])
-  })
-  for (var key in rules) turndownService.addRule(key, rules[key])
+  for (const key in rules) turndownService.addRule(key, rules[key])
 }
