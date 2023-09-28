@@ -338,3 +338,14 @@ it('Doesn\'t preserve markdown that is only a link with similar text to the link
 
   expect(htmlToGovspeak(html)).toEqual('https://alphagov.github.io/paste-html-to-govspeak/')
 })
+
+it('Converts Google Docs tables to markdown', () => {
+  const html = openFixture('google-docs-2023-table.html')
+
+  expect(htmlToGovspeak(html)).toEqual(
+    '| Header 1 | Header 2 | Header 3 |\n' +
+    '| --- | --- | --- |\n' +
+    '| A | B | C |\n' +
+    '| D | E | F |'
+  )
+})
