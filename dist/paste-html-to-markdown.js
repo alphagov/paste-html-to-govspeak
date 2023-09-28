@@ -81,9 +81,9 @@
     )
   }
 
-  var rules = {};
+  var rules$1 = {};
 
-  rules.paragraph = {
+  rules$1.paragraph = {
     filter: 'p',
 
     replacement: function (content) {
@@ -91,7 +91,7 @@
     }
   };
 
-  rules.lineBreak = {
+  rules$1.lineBreak = {
     filter: 'br',
 
     replacement: function (content, node, options) {
@@ -99,7 +99,7 @@
     }
   };
 
-  rules.heading = {
+  rules$1.heading = {
     filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
 
     replacement: function (content, node, options) {
@@ -116,7 +116,7 @@
     }
   };
 
-  rules.blockquote = {
+  rules$1.blockquote = {
     filter: 'blockquote',
 
     replacement: function (content) {
@@ -126,7 +126,7 @@
     }
   };
 
-  rules.list = {
+  rules$1.list = {
     filter: ['ul', 'ol'],
 
     replacement: function (content, node) {
@@ -139,7 +139,7 @@
     }
   };
 
-  rules.listItem = {
+  rules$1.listItem = {
     filter: 'li',
 
     replacement: function (content, node, options) {
@@ -160,7 +160,7 @@
     }
   };
 
-  rules.indentedCodeBlock = {
+  rules$1.indentedCodeBlock = {
     filter: function (node, options) {
       return (
         options.codeBlockStyle === 'indented' &&
@@ -179,7 +179,7 @@
     }
   };
 
-  rules.fencedCodeBlock = {
+  rules$1.fencedCodeBlock = {
     filter: function (node, options) {
       return (
         options.codeBlockStyle === 'fenced' &&
@@ -215,7 +215,7 @@
     }
   };
 
-  rules.horizontalRule = {
+  rules$1.horizontalRule = {
     filter: 'hr',
 
     replacement: function (content, node, options) {
@@ -223,7 +223,7 @@
     }
   };
 
-  rules.inlineLink = {
+  rules$1.inlineLink = {
     filter: function (node, options) {
       return (
         options.linkStyle === 'inlined' &&
@@ -240,7 +240,7 @@
     }
   };
 
-  rules.referenceLink = {
+  rules$1.referenceLink = {
     filter: function (node, options) {
       return (
         options.linkStyle === 'referenced' &&
@@ -287,7 +287,7 @@
     }
   };
 
-  rules.emphasis = {
+  rules$1.emphasis = {
     filter: ['em', 'i'],
 
     replacement: function (content, node, options) {
@@ -296,7 +296,7 @@
     }
   };
 
-  rules.strong = {
+  rules$1.strong = {
     filter: ['strong', 'b'],
 
     replacement: function (content, node, options) {
@@ -305,7 +305,7 @@
     }
   };
 
-  rules.code = {
+  rules$1.code = {
     filter: function (node) {
       var hasSiblings = node.previousSibling || node.nextSibling;
       var isCodeBlock = node.parentNode.nodeName === 'PRE' && !hasSiblings;
@@ -326,7 +326,7 @@
     }
   };
 
-  rules.image = {
+  rules$1.image = {
     filter: 'img',
 
     replacement: function (content, node) {
@@ -725,7 +725,7 @@
     if (!(this instanceof TurndownService)) return new TurndownService(options)
 
     var defaults = {
-      rules: rules,
+      rules: rules$1,
       headingStyle: 'setext',
       hr: '* * *',
       bulletListMarker: '*',
@@ -947,10 +947,79 @@
     )
   }
 
+  var indexOf = Array.prototype.indexOf;
+  var rules = {};
+  rules.tableCell = {
+    filter: ['th', 'td'],
+    replacement: function replacement(content, node) {
+      return cell(content, node);
+    }
+  };
+  rules.tableRow = {
+    filter: 'tr',
+    replacement: function replacement(content, node) {
+      var borderCells = '';
+      var alignMap = {
+        left: ':--',
+        right: '--:',
+        center: ':-:'
+      };
+      if (isHeadingRow(node)) {
+        for (var i = 0; i < node.childNodes.length; i++) {
+          var border = '---';
+          var align = (node.childNodes[i].getAttribute('align') || '').toLowerCase();
+          if (align) border = alignMap[align] || border;
+          borderCells += cell(border, node.childNodes[i]);
+        }
+      }
+      return '\n' + content + (borderCells ? '\n' + borderCells : '');
+    }
+  };
+  rules.table = {
+    filter: function filter(node) {
+      return node.nodeName === 'TABLE' && isHeadingRow(node.rows[0]);
+    },
+    replacement: function replacement(content) {
+      // Ensure there are no blank lines
+      content = content.replace('\n\n', '\n');
+      return '\n\n' + content + '\n\n';
+    }
+  };
+  rules.tableSection = {
+    filter: ['thead', 'tbody', 'tfoot'],
+    replacement: function replacement(content) {
+      return content;
+    }
+  };
+
+  // A tr is a heading row if:
+  // - the parent is a THEAD
+  // - or if its the first child of the TABLE or the first TBODY (possibly
+  //   following a blank THEAD)
+  function isHeadingRow(tr) {
+    var parentNode = tr.parentNode;
+    return parentNode.nodeName === 'THEAD' || parentNode.firstChild === tr && (parentNode.nodeName === 'TABLE' || isFirstTbody(parentNode));
+  }
+  function isFirstTbody(element) {
+    var previousSibling = element.previousSibling;
+    return element.nodeName === 'TBODY' && (!previousSibling || previousSibling.nodeName === 'THEAD' && /^\s*$/i.test(previousSibling.textContent));
+  }
+  function cell(content, node) {
+    var index = indexOf.call(node.parentNode.childNodes, node);
+    var prefix = ' ';
+    if (index === 0) prefix = '| ';
+    return prefix + content.trim() + ' |';
+  }
+  function tables(turndownService) {
+    for (var key in rules) turndownService.addRule(key, rules[key]);
+  }
+
   var service = new TurndownService({
     bulletListMarker: '-',
     listIndent: '   ' // 3 spaces
   });
+
+  service.use(tables);
 
   // define all the elements we want stripped from output
   var elementsToRemove = ['title', 'script', 'noscript', 'style', 'video', 'audio', 'object', 'iframe'];
