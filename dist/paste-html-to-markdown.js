@@ -1018,7 +1018,6 @@
     bulletListMarker: '-',
     listIndent: '   ' // 3 spaces
   });
-
   service.use(tables);
 
   // define all the elements we want stripped from output
