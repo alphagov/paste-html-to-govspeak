@@ -8,6 +8,10 @@
   useful summary for people upgrading their application, not a replication
   of the commit log.
 
+## 0.5.0
+
+- Make email links use the recommended markdown style
+
 ## 0.4.0
 
 - Add table plugin for handling tables
