@@ -38,7 +38,12 @@ service.addRule('link', {
     if (content.trim() === '') {
       return ''
     } else {
-      return `[${content}](${node.getAttribute('href')})`
+      const mailtoLink = node.getAttribute('href').match(/^mailto:(.+)$/)
+      if (mailtoLink) {
+        return `<${mailtoLink[1]}>`
+      } else {
+        return `[${content}](${node.getAttribute('href')})`
+      }
     }
   }
 })
