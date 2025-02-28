@@ -84,6 +84,10 @@ To continuously build files while developing run:
 npm run watch
 ```
 
+## Deployment
+
+The npmjs.com hosted module [paste-html-to-govspeak](https://www.npmjs.com/package/paste-html-to-govspeak) is automatically updated [when there is a merge to `main` that updates the `version` property in package.json](https://github.com/alphagov/paste-html-to-govspeak/blob/c280e7047ba612cbd5f479c37b8d41b18957207c/.github/workflows/ci.yml#L57-L61).
+
 ## License
 
 [MIT License](LICENCE)
