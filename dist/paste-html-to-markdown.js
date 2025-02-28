@@ -1044,7 +1044,12 @@
       if (content.trim() === '') {
         return '';
       } else {
-        return "[".concat(content, "](").concat(node.getAttribute('href'), ")");
+        var mailtoLink = node.getAttribute('href').match(/^mailto:(.+)$/);
+        if (mailtoLink) {
+          return "<".concat(mailtoLink[1], ">");
+        } else {
+          return "[".concat(content, "](").concat(node.getAttribute('href'), ")");
+        }
       }
     }
   });
