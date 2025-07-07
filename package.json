@@ -54,7 +54,7 @@
     "babel-jest": "^30.0.2",
     "insert-text-at-cursor": "^0.3.0",
     "jest": "^29.0.0",
-    "jest-environment-jsdom": "^29.0.2",
+    "jest-environment-jsdom": "^30.0.4",
     "npm-watch": "^0.13.0",
     "rollup": "^2.26.10",
     "rollup-plugin-babel": "^4.3.3",
