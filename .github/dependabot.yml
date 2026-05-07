@@ -5,7 +5,12 @@ updates:
     dependency-type: production
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 3
+
   - package-ecosystem: "github-actions"
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 3
