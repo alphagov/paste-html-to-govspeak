@@ -5,7 +5,14 @@ updates:
     dependency-type: production
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 3
+    open-pull-requests-limit: 25
+
   - package-ecosystem: "github-actions"
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 3
+    open-pull-requests-limit: 25
