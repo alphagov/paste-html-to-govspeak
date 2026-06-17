@@ -2,7 +2,8 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
-    dependency-type: production
+    allow:
+      - dependency-type: production
     schedule:
       interval: monthly
     cooldown:
