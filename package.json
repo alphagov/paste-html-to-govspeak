@@ -56,7 +56,7 @@
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
     "npm-watch": "^0.13.0",
-    "rollup": "^2.26.10",
+    "rollup": "^2.80.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-node-resolve": "^5.2.0",
     "standard": "^17.0.0",
